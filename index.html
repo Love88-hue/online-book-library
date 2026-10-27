@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f2eb">
+  <meta name="description" content="Discover, read, and share books in the Online Book Library.">
+  <title>Online Book Library — A little more wonder, every day</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=2">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Online Book Library home">
+      <span class="brand-mark" aria-hidden="true">ob</span>
+      <span class="brand-name">online<span>book library</span></span>
+    </a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a class="nav-link active" href="index.html" data-i18n="navHome">Discover</a>
+      <a class="nav-link" href="#library" data-i18n="navBrowse">Browse books</a>
+      <a class="nav-link" href="about.html" data-i18n="navAbout">About</a>
+      <a class="nav-link" href="reviews.html" data-i18n="navReviews">Reviews</a>
+    </nav>
+    <div class="header-actions">
+      <label class="language-picker">
+        <span class="sr-only">Choose language</span>
+        <span aria-hidden="true">文</span>
+        <select id="language-select" aria-label="Choose language">
+          <option value="en">EN</option>
+          <option value="hi">हिन्दी</option>
+        </select>
+      </label>
+      <button class="button button-quiet header-donate" id="donate-button" type="button" data-i18n="donate">Donate</button>
+      <button class="button button-dark" id="account-button" type="button" data-i18n="login">Log in</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow"><span class="eyebrow-dot"></span><span data-i18n="heroEyebrow">YOUR NEXT CHAPTER STARTS HERE</span></span>
+        <h1 data-i18n="heroTitle">A little more<br><em>wonder,</em> every day.</h1>
+        <p data-i18n="heroDescription">Find a quiet corner, discover a new favorite, and let a good book take you somewhere lovely.</p>
+        <a class="button button-dark hero-button" href="#library"><span data-i18n="exploreBooks">Explore the library</span><span aria-hidden="true">↗</span></a>
+        <div class="hero-note"><span class="avatar-stack" aria-hidden="true"><i>J</i><i>A</i><i>M</i></span><span data-i18n="heroNote">A cozy corner for curious minds</span></div>
+      </div>
+      <div class="hero-art">
+        <img class="hero-photo" src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&amp;fit=crop&amp;w=1200&amp;q=85" alt="Sunlit shelves in a welcoming library" fetchpriority="high">
+        <div class="hero-photo-shade"></div>
+        <div class="hero-image-label"><span class="hero-live-dot"></span> A QUIETER KIND OF ONLINE</div>
+        <div class="hero-image-caption"><span>YOUR NEXT CHAPTER</span><strong>Find a story<br>to call yours.</strong></div>
+        <div class="hero-image-count"><span class="hero-count-icon">✳</span><span><strong>60 stories to discover</strong><small>There is a book for every mood.</small></span></div>
+        <div class="hero-photo-credit">A LITTLE SPACE TO GET LOST IN A STORY</div>
+        <div class="hero-floating-book">
+          <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&amp;fit=crop&amp;w=420&amp;h=360&amp;q=80" alt="An open book ready to be read" loading="eager">
+          <div><span>MAKE YOURSELF AT HOME</span><strong>One more chapter?</strong></div>
+          <span class="floating-book-arrow" aria-hidden="true">↗</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="feature-strip" aria-label="Library highlights">
+      <div><span class="feature-icon">✳</span><span><strong>60 lovely reads</strong><small>Handpicked to get you started</small></span></div>
+      <div><span class="feature-icon">♡</span><span><strong>Your own reading list</strong><small>Keep the stories you love close</small></span></div>
+      <div><span class="feature-icon">↗</span><span><strong>Share a little magic</strong><small>Add a book to the library</small></span></div>
+    </section>
+
+    <section class="library-section" id="library">
+      <div class="section-heading">
+        <div><span class="eyebrow" data-i18n="libraryEyebrow">A SHELF FOR EVERY MOOD</span><h2 data-i18n="libraryTitle">Find your next favorite</h2></div>
+        <button class="button button-outline" id="upload-button" type="button"><span aria-hidden="true">＋</span><span data-i18n="addBook">Add a book</span></button>
+      </div>
+      <div class="library-toolbar">
+        <div class="library-tabs" role="tablist" aria-label="Book shelf">
+          <button class="tab-button selected" id="discover-tab" type="button" role="tab" aria-selected="true" data-i18n="tabDiscover">Discover</button>
+          <button class="tab-button" id="watchlist-tab" type="button" role="tab" aria-selected="false"><span data-i18n="tabWatchlist">My watchlist</span><span class="watch-count" id="watch-count">0</span></button>
+        </div>
+        <div class="library-filters">
+          <label class="search-box"><span aria-hidden="true">⌕</span><span class="sr-only">Search books</span><input id="search-input" type="search" placeholder="Search title or author…" data-i18n-placeholder="searchPlaceholder"></label>
+          <label class="select-wrap"><span class="sr-only">Choose category</span><select id="category-select" aria-label="Choose category"><option value="all" data-i18n="allCategories">All categories</option></select></label>
+        </div>
+      </div>
+      <div class="category-chips" id="category-chips" aria-label="Book categories"></div>
+      <div class="book-grid" id="book-grid" aria-live="polite"></div>
+      <div class="empty-state hidden" id="empty-state"><span>☁</span><h3 data-i18n="emptyTitle">Nothing on this shelf just yet</h3><p data-i18n="emptyDescription">Try another search, or save a book to your watchlist.</p><button class="text-button" id="show-all-button" type="button" data-i18n="showAll">Show all books ↗</button></div>
+      <p class="library-footnote" id="library-footnote">Real cover images are shown where available via <a href="https://openlibrary.org/" target="_blank" rel="noopener noreferrer">Open Library</a>; unavailable covers get an illustrated fallback. Featured titles link to public search results. Your PDF uploads stay in this browser.</p>
+    </section>
+
+    <section class="share-banner">
+      <div class="share-illustration" aria-hidden="true"><span>✿</span><i></i></div>
+      <div><span class="eyebrow" data-i18n="shareEyebrow">GOOD STORIES GROW WHEN SHARED</span><h2 data-i18n="shareTitle">Have a book to pass along?</h2><p data-i18n="shareDescription">Add a PDF and its cover to your personal library shelf. Your files stay on this device.</p></div>
+      <button class="button button-dark" id="share-upload-button" type="button"><span data-i18n="shareButton">Share a book</span><span aria-hidden="true">↗</span></button>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="brand footer-brand" href="index.html"><span class="brand-mark" aria-hidden="true">ob</span><span class="brand-name">online<span>book library</span></span></a>
+    <p data-i18n="footerLine">Made for slow mornings and one-more-chapter nights.</p>
+    <div><a href="about.html" data-i18n="navAbout">About</a><a href="reviews.html" data-i18n="navReviews">Reviews</a><button type="button" class="footer-donate" id="footer-donate">Donate a book</button></div>
+  </footer>
+
+  <dialog class="site-dialog" id="upload-dialog">
+    <form class="dialog-shell" id="upload-form">
+      <button class="dialog-close" type="button" data-close-dialog aria-label="Close">×</button>
+      <span class="eyebrow">ADD TO YOUR SHELF</span><h2>Upload a book PDF</h2>
+      <p class="dialog-intro">Choose the book's PDF and its cover image. Both files are saved in this browser only and aren't uploaded to a server.</p>
+      <label class="field-label">Book title<input name="title" required maxlength="100" placeholder="A book worth sharing"></label>
+      <label class="field-label">Author<input name="author" required maxlength="80" placeholder="Author name"></label>
+      <label class="field-label">Category<select name="category" required><option>Fiction</option><option>Fantasy</option><option>Classics</option><option>Poetry</option><option>Mystery</option><option>Adventure</option><option>Romance</option><option>Non-fiction</option><option>Children</option><option>Other</option></select></label>
+      <div class="upload-fields"><label class="file-field"><span>Cover image <small>(JPG, PNG, WEBP · max 5 MB)</small></span><input name="cover" type="file" accept="image/png,image/jpeg,image/webp" required></label><label class="file-field"><span>Book file <small>(PDF · max 30 MB)</small></span><input name="pdf" type="file" accept="application/pdf,.pdf" required></label></div>
+      <p class="form-message" id="upload-message" role="status"></p>
+      <button class="button button-dark dialog-submit" type="submit">Add to my library <span aria-hidden="true">↗</span></button>
+    </form>
+  </dialog>
+
+  <dialog class="site-dialog" id="account-dialog">
+    <form class="dialog-shell" id="account-form">
+      <button class="dialog-close" type="button" data-close-dialog aria-label="Close">×</button>
+      <span class="eyebrow">YOUR LITTLE READING CORNER</span><h2 id="account-title">Welcome back</h2>
+      <p class="dialog-intro">This demo keeps account details and your reading list in this browser only. It doesn't create a secure online account.</p>
+      <label class="field-label account-name-field hidden">Your name<input name="name" maxlength="60" placeholder="Your name"></label>
+      <label class="field-label">Email address<input name="email" type="email" autocomplete="email" required placeholder="you@example.com"></label>
+      <label class="field-label">Password<input name="password" type="password" autocomplete="current-password" required minlength="8" placeholder="At least 8 characters"></label>
+      <p class="form-message" id="account-message" role="status"></p>
+      <button class="button button-dark dialog-submit" type="submit" id="account-submit">Log in <span aria-hidden="true">↗</span></button>
+      <button class="text-button account-switch" type="button" id="account-switch">New here? Create an account</button>
+    </form>
+  </dialog>
+
+  <dialog class="site-dialog" id="donate-dialog">
+    <div class="dialog-shell">
+      <button class="dialog-close" type="button" data-close-dialog aria-label="Close">×</button>
+      <span class="eyebrow">PASS THE STORY ALONG</span><h2>Donate a book</h2>
+      <p class="dialog-intro">The library's online payment service isn't set up yet. You can still help this little library grow by sharing a book PDF and its cover.</p>
+      <button class="button button-dark dialog-submit" type="button" id="donate-upload">Donate a book <span aria-hidden="true">↗</span></button>
+      <p class="privacy-note">Shared files remain on your device in this demo. A real shared library needs a secure server.</p>
+    </div>
+  </dialog>
+
+  <dialog class="site-dialog" id="book-dialog">
+    <div class="dialog-shell book-dialog-shell">
+      <button class="dialog-close" type="button" data-close-dialog aria-label="Close">×</button>
+      <div id="book-detail"></div>
+    </div>
+  </dialog>
+</body>
+</html>
