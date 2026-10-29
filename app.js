@@ -302,7 +302,7 @@ function updateBackendCopy() {
 
 function updateProfileLink() {
   const link = document.getElementById("profile-link");
-  if (link) link.classList.toggle("hidden", !flaskBackendEnabled || !currentUser);
+  if (link) link.classList.remove("hidden");
 }
 
 function getVisibleBooks() {

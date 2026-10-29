@@ -28,7 +28,7 @@ async function renderProfile() {
   const signIn = document.getElementById("profile-signin");
   const dashboard = document.getElementById("profile-dashboard");
   if (!profileBackendEnabled) {
-    status.textContent = "The profile dashboard is available when you run the Flask website at http://127.0.0.1:5000.";
+    status.innerHTML = `Your profile page is available, but online account data needs the Flask backend.<br><br><a class="button button-dark" href="index.html">Back to the library</a>`;
     return;
   }
   status.classList.remove("hidden");
