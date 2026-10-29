@@ -1,4 +1,5 @@
 const reviewsKey = "obl_reviews";
+const flaskReviewsEnabled = ["localhost", "127.0.0.1"].includes(location.hostname) && location.port === "5000";
 
 function loadReviews() {
   try {
@@ -10,37 +11,71 @@ function loadReviews() {
   }
 }
 
-function renderReviews() {
+async function renderReviews() {
   const list = document.getElementById("reviews-list");
   const count = document.getElementById("review-count");
   if (!list || !count) return;
-  const reviews = loadReviews();
+  let reviews;
+  try {
+    if (flaskReviewsEnabled) {
+      const response = await fetch("/api/reviews");
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Could not load reviews.");
+      reviews = result.reviews;
+    } else {
+      reviews = loadReviews();
+    }
+  } catch (error) {
+    console.error("Could not load reviews.", error);
+    list.innerHTML = `<div class="review-empty">${escapeHtml(error.message || "Could not load reviews.")}</div>`;
+    return;
+  }
   count.textContent = `${reviews.length} ${reviews.length === 1 ? "note" : "notes"}`;
   list.innerHTML = reviews.length ? reviews.map(review => `<article class="review-card"><div class="review-card-top"><h3>${escapeHtml(review.name)}</h3><span class="review-stars" aria-label="${review.rating} out of 5 stars">${"★".repeat(review.rating)}${"☆".repeat(5 - review.rating)}</span></div><p>${escapeHtml(review.message)}</p><div class="review-date">${new Date(review.createdAt).toLocaleDateString()}</div></article>`).join("") : `<div class="review-empty">No notes yet. Be the first reader to leave one.</div>`;
 }
 
-document.getElementById("review-form")?.addEventListener("submit", event => {
+document.getElementById("review-form")?.addEventListener("submit", async event => {
   event.preventDefault();
-  const data = new FormData(event.currentTarget);
-  const reviews = loadReviews();
-  reviews.unshift({
+  const form = event.currentTarget;
+  const data = new FormData(form);
+  const review = {
     name: String(data.get("name")).trim(),
     rating: Number(data.get("rating")),
-    message: String(data.get("message")).trim(),
-    createdAt: Date.now()
-  });
+    message: String(data.get("message")).trim()
+  };
+  const message = document.getElementById("review-message");
   try {
-    localStorage.setItem(reviewsKey, JSON.stringify(reviews.slice(0, 100)));
-    event.currentTarget.reset();
-    const message = document.getElementById("review-message");
+    if (flaskReviewsEnabled) {
+      const response = await fetch("/api/reviews", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(review)
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Could not post your note.");
+    } else {
+      const reviews = loadReviews();
+      reviews.unshift({ ...review, createdAt: Date.now() });
+      localStorage.setItem(reviewsKey, JSON.stringify(reviews.slice(0, 100)));
+    }
+    form.reset();
     message.textContent = "Thanks for leaving a note!";
     message.classList.add("success");
-    renderReviews();
+    await renderReviews();
   } catch (error) {
     console.error("Saving the review failed.", error);
-    const message = document.getElementById("review-message");
-    message.textContent = "Could not save your note in this browser. Please try again.";
+    message.textContent = error.message || (flaskReviewsEnabled
+      ? "Could not post your note. Please try again."
+      : "Could not save your note in this browser. Please try again.");
   }
 });
 
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
+}
+
+if (flaskReviewsEnabled) {
+  const note = document.querySelector(".review-storage-note");
+  if (note) note.textContent = "Reviews are stored on this computer's Flask server and shared with its visitors.";
+}
 renderReviews();

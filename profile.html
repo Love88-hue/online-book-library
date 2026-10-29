@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f2eb">
+  <meta name="description" content="Your private Online Book Library profile and reading shelf.">
+  <title>My Profile — Online Book Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+  <script src="profile.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Online Book Library home"><span class="brand-mark" aria-hidden="true">ob</span><span class="brand-name">online<span>book library</span></span></a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a class="nav-link" href="index.html">Discover</a>
+      <a class="nav-link" href="index.html#library">Browse books</a>
+      <a class="nav-link" href="about.html">About</a>
+      <a class="nav-link" href="reviews.html">Reviews</a>
+      <a class="button button-outline" id="profile-link" href="profile.html" aria-current="page">My profile</a>
+    </nav>
+    <div class="header-actions">
+      <label class="language-picker"><span class="sr-only">Choose language</span><span aria-hidden="true">文</span><select id="language-select" aria-label="Choose language"><option value="en">EN</option><option value="hi">हिन्दी</option></select></label>
+      <button class="button button-quiet header-donate" id="donate-button" type="button" data-i18n="donate">Donate</button>
+      <button class="button button-dark" id="account-button" type="button" data-i18n="login">Log in</button>
+    </div>
+  </header>
+
+  <main class="subpage profile-page">
+    <section class="subpage-hero profile-hero">
+      <span class="eyebrow">YOUR LITTLE READING CORNER</span>
+      <h1>My <em>profile.</em></h1>
+      <p>Your account details, saved stories, and private book uploads, all together.</p>
+    </section>
+    <section class="profile-content">
+      <div class="profile-message review-empty" id="profile-status" role="status">Loading your profile…</div>
+      <div class="profile-signin hidden" id="profile-signin">
+        <h2>Log in to see your profile</h2>
+        <p>Your watchlist and uploaded books are private to your account.</p>
+        <button class="button button-dark" id="profile-login" type="button">Log in / Sign up</button>
+      </div>
+      <div class="profile-dashboard hidden" id="profile-dashboard">
+        <section class="profile-account-card">
+          <div class="profile-avatar" aria-hidden="true" id="profile-avatar">✳</div>
+          <div><span class="eyebrow">ACCOUNT DETAILS</span><h2 id="profile-name"></h2><p id="profile-email"></p></div>
+          <div class="profile-stats"><span><strong id="watchlist-count">0</strong> saved</span><span><strong id="uploads-count">0</strong> uploads</span></div>
+        </section>
+        <section class="profile-shelf">
+          <div class="profile-section-heading"><div><span class="eyebrow">SAVED FOR LATER</span><h2>My watchlist</h2></div><a class="text-button" href="index.html#library">Browse books ↗</a></div>
+          <div class="profile-book-grid" id="profile-watchlist"></div>
+        </section>
+        <section class="profile-shelf">
+          <div class="profile-section-heading"><div><span class="eyebrow">YOUR PRIVATE BOOKS</span><h2>My uploads</h2></div><a class="text-button" href="index.html#library">Add a book ↗</a></div>
+          <div class="profile-book-grid" id="profile-uploads"></div>
+        </section>
+        <p class="profile-privacy">Your uploaded PDFs, covers, and watchlist are private to your account on this computer's Flask server.</p>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer"><a class="brand footer-brand" href="index.html"><span class="brand-mark" aria-hidden="true">ob</span><span class="brand-name">online<span>book library</span></span></a><p>Made for slow mornings and one-more-chapter nights.</p><div><a href="about.html">About</a><a href="reviews.html">Reviews</a><a href="profile.html">My profile</a></div></footer>
+  <dialog class="site-dialog" id="account-dialog">
+    <form class="dialog-shell" id="account-form">
+      <button class="dialog-close" type="button" data-close-dialog aria-label="Close">×</button>
+      <span class="eyebrow">YOUR LITTLE READING CORNER</span><h2 id="account-title">Welcome back</h2>
+      <p class="dialog-intro">Your account is stored securely by the Flask server on this computer.</p>
+      <label class="field-label account-name-field hidden">Your name<input name="name" maxlength="60" placeholder="Your name"></label>
+      <label class="field-label">Email address<input name="email" type="email" autocomplete="email" required placeholder="you@example.com"></label>
+      <label class="field-label">Password<input name="password" type="password" autocomplete="current-password" required minlength="8" placeholder="At least 8 characters"></label>
+      <p class="form-message" id="account-message" role="status"></p>
+      <button class="button button-dark dialog-submit" type="submit" id="account-submit">Log in <span aria-hidden="true">↗</span></button>
+      <button class="text-button account-switch" type="button" id="account-switch">New here? Create an account</button>
+    </form>
+  </dialog>
+</body>
+</html>

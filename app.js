@@ -70,6 +70,9 @@ const seedBooks = [
   coverUrl: `https://covers.openlibrary.org/b/title/${encodeURIComponent(title)}-M.jpg?default=false`,
   uploaded: false
 }));
+window.libraryBookCatalog = seedBooks.map(({ id, title, author, category, year, coverUrl }) => ({
+  id, title, author, category, year, coverUrl
+}));
 
 const translations = {
   en: {
@@ -100,11 +103,21 @@ const translations = {
 
 const categoryColors = ["#718568", "#bd8068", "#7c8294", "#b69866", "#6c8a83", "#986f7d", "#8e795e", "#6e7989"];
 const databaseName = "online-book-library";
+const flaskBackendEnabled = ["localhost", "127.0.0.1"].includes(location.hostname) && location.port === "5000";
 let allBooks = [...seedBooks];
 let activeTab = "discover";
 let selectedCategory = "all";
 let activeLanguage = localStorage.getItem("obl_language") || "en";
 let accountMode = "login";
+let currentUser = null;
+let serverWatchlist = [];
+
+async function apiRequest(path, options = {}) {
+  const response = await fetch(path, { credentials: "same-origin", ...options });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(result.error || `Request failed (${response.status}).`);
+  return result;
+}
 
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
@@ -200,10 +213,11 @@ async function deleteUpload(id) {
 }
 
 function getAccountEmail() {
-  return localStorage.getItem("obl_session") || "";
+  return flaskBackendEnabled ? currentUser?.email || "" : localStorage.getItem("obl_session") || "";
 }
 
 function getWatchlist() {
+  if (flaskBackendEnabled) return serverWatchlist;
   try {
     return JSON.parse(localStorage.getItem(`obl_watchlist_${getAccountEmail() || "guest"}`) || "[]");
   } catch (error) {
@@ -212,7 +226,17 @@ function getWatchlist() {
   }
 }
 
-function setWatchlist(ids) {
+async function setWatchlist(ids) {
+  if (flaskBackendEnabled) {
+    if (!currentUser) throw new Error("Please log in to save your watchlist.");
+    const result = await apiRequest("/api/watchlist", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ids })
+    });
+    serverWatchlist = result.ids;
+    return;
+  }
   localStorage.setItem(`obl_watchlist_${getAccountEmail() || "guest"}`, JSON.stringify(ids));
 }
 
@@ -236,6 +260,49 @@ function applyLanguage(language) {
   });
   const select = document.getElementById("language-select");
   if (select) select.value = activeLanguage;
+  updateBackendCopy();
+}
+
+function updateBackendCopy() {
+  if (!flaskBackendEnabled) return;
+  const copy = activeLanguage === "hi"
+    ? {
+        account: "आपका खाता और पासवर्ड सुरक्षित रूप से इस कंप्यूटर के Flask सर्वर में रखे जाते हैं।",
+        upload: "आपकी PDF और कवर इस कंप्यूटर पर रखे जाते हैं और केवल आपके खाते को दिखाई देते हैं।",
+        share: "PDF और कवर अपलोड करें। आपकी फ़ाइलें केवल आपके खाते के लिए निजी रहेंगी।",
+        footnote: "अपलोड की गई पुस्तकें और फ़ाइलें केवल उस खाते को दिखाई देती हैं जिसने उन्हें जोड़ा है।",
+        donate: "भुगतान सेवा अभी सेट नहीं है। आप अपनी निजी लाइब्रेरी में पुस्तक PDF और कवर जोड़ सकते हैं।",
+        privacy: "अपलोड की गई फ़ाइलें निजी हैं और केवल आपके खाते को उपलब्ध हैं।",
+        aboutUpload: "अपलोड की गई PDF और कवर इस कंप्यूटर के Flask सर्वर में रखे जाते हैं और केवल आपके खाते को दिखाई देते हैं।",
+        aboutPrivacy: "इस Flask सर्वर पर खाते password hashing और सुरक्षित session cookies के साथ चलते हैं। अपलोड केवल मालिक के खाते को दिखाई देते हैं।"
+      }
+    : {
+        account: "Your account is stored securely by the Flask server on this computer.",
+        upload: "Your PDF and cover are stored on this computer and are private to your account.",
+        share: "Upload a PDF and cover. Your files stay private to your account.",
+        footnote: "Uploaded books and files are private to the account that added them.",
+        donate: "Online payments are not set up. You can add a book PDF and cover to your private library.",
+        privacy: "Uploaded files are private and available only to your account.",
+        aboutUpload: "Uploaded PDFs and covers are stored on this computer's Flask server and are visible only to your account.",
+        aboutPrivacy: "This Flask server uses hashed passwords and signed session cookies. Uploaded files are private to their owner's account."
+      };
+  const text = (selector, value) => {
+    const element = document.querySelector(selector);
+    if (element) element.textContent = value;
+  };
+  text("#account-dialog .dialog-intro", copy.account);
+  text("#upload-dialog .dialog-intro", copy.upload);
+  text('[data-i18n="shareDescription"]', copy.share);
+  text("#library-footnote", copy.footnote);
+  text("#donate-dialog .dialog-intro", copy.donate);
+  text("#donate-dialog .privacy-note", copy.privacy);
+  text(".about-content article p:nth-of-type(2)", copy.aboutUpload);
+  text(".about-values > div:nth-child(3) p", copy.aboutPrivacy);
+}
+
+function updateProfileLink() {
+  const link = document.getElementById("profile-link");
+  if (link) link.classList.toggle("hidden", !flaskBackendEnabled || !currentUser);
 }
 
 function getVisibleBooks() {
@@ -294,6 +361,10 @@ function setActiveTab(tab) {
 }
 
 function readBook(book) {
+  if (book.pdfUrl) {
+    window.open(book.pdfUrl, "_blank", "noopener,noreferrer");
+    return;
+  }
   if (book.pdf instanceof Blob) {
     const url = URL.createObjectURL(book.pdf);
     const link = document.createElement("a");
@@ -312,7 +383,10 @@ function openBookDetails(book) {
   const dialog = document.getElementById("book-dialog");
   const content = document.getElementById("book-detail");
   if (!dialog || !content) return;
-  content.innerHTML = `<div class="book-detail-content"><img class="book-detail-cover" src="${makeCover(book)}" alt="Cover of ${escapeHtml(book.title)}"><div><span class="eyebrow">${escapeHtml(book.category)}</span><h2>${escapeHtml(book.title)}</h2><p class="book-detail-author">by ${escapeHtml(book.author)}${book.year ? ` · ${escapeHtml(book.year)}` : ""}</p><p class="book-detail-description">${book.uploaded ? "A book shared to your personal library. Its PDF and cover are stored in this browser only." : "A much-loved title from the library's starter collection. Search for a copy to read online."}</p><div class="book-detail-actions"><button class="button button-dark" type="button" data-read="${escapeHtml(book.id)}">Read ${book.uploaded ? "PDF" : "online"} ↗</button><button class="button button-outline" type="button" data-watch="${escapeHtml(book.id)}">♡ Save for later</button></div></div></div>`;
+  const uploadDescription = flaskBackendEnabled
+    ? "This uploaded book and its files are private to the account that added them."
+    : "A book saved in this browser. Its PDF and cover are stored on this device only.";
+  content.innerHTML = `<div class="book-detail-content"><img class="book-detail-cover" src="${makeCover(book)}" alt="Cover of ${escapeHtml(book.title)}"><div><span class="eyebrow">${escapeHtml(book.category)}</span><h2>${escapeHtml(book.title)}</h2><p class="book-detail-author">by ${escapeHtml(book.author)}${book.year ? ` · ${escapeHtml(book.year)}` : ""}</p><p class="book-detail-description">${book.uploaded ? uploadDescription : "A much-loved title from the library's starter collection. Search for a copy to read online."}</p><div class="book-detail-actions"><button class="button button-dark" type="button" data-read="${escapeHtml(book.id)}">Read ${book.uploaded ? "PDF" : "online"} ↗</button><button class="button button-outline" type="button" data-watch="${escapeHtml(book.id)}">♡ Save for later</button></div></div></div>`;
   bindCoverFallback(content.querySelector(".book-detail-cover"), book);
   dialog.showModal();
 }
@@ -327,19 +401,37 @@ function readFileAsDataUrl(file) {
 }
 
 async function refreshBooks() {
-  const uploads = await getUploads();
-  allBooks = [...seedBooks, ...uploads.sort((a, b) => b.createdAt - a.createdAt)];
+  if (!document.getElementById("book-grid")) return;
+  const uploads = flaskBackendEnabled
+    ? currentUser ? (await apiRequest("/api/uploads")).books : []
+    : await getUploads();
+  allBooks = [...seedBooks, ...uploads.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())];
   renderBooks();
 }
 
-function showAccountDialog() {
+async function showAccountDialog() {
   const dialog = document.getElementById("account-dialog");
   if (!dialog) return;
   const sessionEmail = getAccountEmail();
   const accountButton = document.getElementById("account-button");
   if (accountButton) accountButton.textContent = sessionEmail ? translations[activeLanguage].logout : translations[activeLanguage].login;
   if (sessionEmail) {
-    localStorage.removeItem("obl_session");
+    if (flaskBackendEnabled) {
+      try {
+        await apiRequest("/api/logout", { method: "POST" });
+        currentUser = null;
+        serverWatchlist = [];
+        updateProfileLink();
+        window.dispatchEvent(new Event("obl-auth-changed"));
+        await refreshBooks();
+      } catch (error) {
+        console.error("Signing out failed.", error);
+        setMessage(document.getElementById("account-message"), error.message);
+        return;
+      }
+    } else {
+      localStorage.removeItem("obl_session");
+    }
     if (accountButton) accountButton.textContent = translations[activeLanguage].login;
     setActiveTab(activeTab);
     return;
@@ -356,11 +448,13 @@ function updateAccountMode() {
   const submit = document.getElementById("account-submit");
   const switchButton = document.getElementById("account-switch");
   const nameField = document.querySelector(".account-name-field");
+  const nameInput = nameField?.querySelector("input");
   const password = document.querySelector('#account-form input[name="password"]');
   if (title) title.textContent = isSignup ? "Create your account" : "Welcome back";
   if (submit) submit.innerHTML = `${isSignup ? "Create account" : "Log in"} <span aria-hidden="true">↗</span>`;
   if (switchButton) switchButton.textContent = isSignup ? "Already have an account? Log in" : "New here? Create an account";
   nameField?.classList.toggle("hidden", !isSignup);
+  if (nameInput) nameInput.required = isSignup;
   if (password) password.autocomplete = isSignup ? "new-password" : "current-password";
 }
 
@@ -389,15 +483,30 @@ function bindCommonControls() {
     renderBooks();
   });
   document.getElementById("discover-tab")?.addEventListener("click", () => setActiveTab("discover"));
-  document.getElementById("watchlist-tab")?.addEventListener("click", () => setActiveTab("watchlist"));
+  document.getElementById("watchlist-tab")?.addEventListener("click", () => {
+    if (flaskBackendEnabled && !currentUser) {
+      showAccountDialog();
+      setMessage(document.getElementById("account-message"), "Log in to use your private watchlist.");
+      return;
+    }
+    setActiveTab("watchlist");
+  });
   document.getElementById("show-all-button")?.addEventListener("click", () => {
     selectedCategory = "all";
     const search = document.getElementById("search-input");
     if (search) search.value = "";
     setActiveTab("discover");
   });
-  document.getElementById("upload-button")?.addEventListener("click", () => document.getElementById("upload-dialog")?.showModal());
-  document.getElementById("share-upload-button")?.addEventListener("click", () => document.getElementById("upload-dialog")?.showModal());
+  const openUploadDialog = () => {
+    if (flaskBackendEnabled && !currentUser) {
+      showAccountDialog();
+      setMessage(document.getElementById("account-message"), "Log in to add a private book.");
+      return;
+    }
+    document.getElementById("upload-dialog")?.showModal();
+  };
+  document.getElementById("upload-button")?.addEventListener("click", openUploadDialog);
+  document.getElementById("share-upload-button")?.addEventListener("click", openUploadDialog);
   document.getElementById("donate-button")?.addEventListener("click", () => document.getElementById("donate-dialog")?.showModal());
   document.getElementById("footer-donate")?.addEventListener("click", () => document.getElementById("donate-dialog")?.showModal());
   document.getElementById("donate-upload")?.addEventListener("click", () => {
@@ -435,17 +544,21 @@ function bindCommonControls() {
     }
     setMessage(message, "Saving your book…");
     try {
-      const coverUrl = await readFileAsDataUrl(cover);
-      await saveUpload({
-        id: `upload-${crypto.randomUUID()}`,
-        title: String(data.get("title")).trim(),
-        author: String(data.get("author")).trim(),
-        category: String(data.get("category")),
-        cover: coverUrl,
-        pdf,
-        createdAt: Date.now(),
-        uploaded: true
-      });
+      if (flaskBackendEnabled) {
+        await apiRequest("/api/uploads", { method: "POST", body: data });
+      } else {
+        const coverUrl = await readFileAsDataUrl(cover);
+        await saveUpload({
+          id: `upload-${crypto.randomUUID()}`,
+          title: String(data.get("title")).trim(),
+          author: String(data.get("author")).trim(),
+          category: String(data.get("category")),
+          cover: coverUrl,
+          pdf,
+          createdAt: Date.now(),
+          uploaded: true
+        });
+      }
       form.reset();
       setMessage(message, "Book added to your library.", true);
       await refreshBooks();
@@ -457,27 +570,49 @@ function bindCommonControls() {
   });
   document.getElementById("account-form")?.addEventListener("submit", async event => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    const form = event.currentTarget;
+    const data = new FormData(form);
     const email = String(data.get("email")).trim().toLowerCase();
     const password = String(data.get("password"));
     const message = document.getElementById("account-message");
     try {
-      const accounts = JSON.parse(localStorage.getItem("obl_accounts") || "{}");
-      if (accountMode === "signup") {
-        if (accounts[email]) throw new Error("An account already exists here for that email.");
-        const salt = crypto.randomUUID();
-        accounts[email] = { salt, passwordHash: await hashPassword(password, salt), name: String(data.get("name") || "").trim() };
-        localStorage.setItem("obl_accounts", JSON.stringify(accounts));
+      if (flaskBackendEnabled) {
+        const path = accountMode === "signup" ? "/api/signup" : "/api/login";
+        const payload = {
+          email,
+          password,
+          ...(accountMode === "signup" ? { name: String(data.get("name") || "").trim() } : {})
+        };
+        const result = await apiRequest(path, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        currentUser = result.user;
+        serverWatchlist = (await apiRequest("/api/watchlist")).ids;
+        updateProfileLink();
+        window.dispatchEvent(new Event("obl-auth-changed"));
       } else {
-        const account = accounts[email];
-        if (!account || await hashPassword(password, account.salt) !== account.passwordHash) throw new Error("Email or password doesn't match an account in this browser.");
+        const accounts = JSON.parse(localStorage.getItem("obl_accounts") || "{}");
+        if (accountMode === "signup") {
+          if (accounts[email]) throw new Error("An account already exists here for that email.");
+          const salt = crypto.randomUUID();
+          accounts[email] = { salt, passwordHash: await hashPassword(password, salt), name: String(data.get("name") || "").trim() };
+          localStorage.setItem("obl_accounts", JSON.stringify(accounts));
+        } else {
+          const account = accounts[email];
+          if (!account || await hashPassword(password, account.salt) !== account.passwordHash) throw new Error("Email or password doesn't match an account in this browser.");
+        }
+        localStorage.setItem("obl_session", email);
       }
-      localStorage.setItem("obl_session", email);
       document.getElementById("account-dialog").close();
-      event.currentTarget.reset();
+      form.reset();
       const button = document.getElementById("account-button");
       if (button) button.textContent = translations[activeLanguage].logout;
-      renderBooks();
+      await refreshBooks();
+      if (flaskBackendEnabled && location.pathname !== "/profile.html") {
+        location.assign("/profile.html");
+      }
     } catch (error) {
       setMessage(message, error.message || "Could not sign in. Please try again.");
     }
@@ -485,10 +620,19 @@ function bindCommonControls() {
   document.getElementById("book-grid")?.addEventListener("click", async event => {
     const watchButton = event.target.closest("[data-watch]");
     if (watchButton) {
+      if (flaskBackendEnabled && !currentUser) {
+        showAccountDialog();
+        return;
+      }
       const id = watchButton.dataset.watch;
       const saved = getWatchlist();
-      setWatchlist(saved.includes(id) ? saved.filter(bookId => bookId !== id) : [...saved, id]);
-      renderBooks();
+      try {
+        await setWatchlist(saved.includes(id) ? saved.filter(bookId => bookId !== id) : [...saved, id]);
+        renderBooks();
+      } catch (error) {
+        console.error("Updating the watchlist failed.", error);
+        alert(error.message);
+      }
       return;
     }
     const readButton = event.target.closest("[data-read]");
@@ -505,10 +649,17 @@ function bindCommonControls() {
     }
     const deleteButton = event.target.closest("[data-delete]");
     if (deleteButton) {
-      if (!confirm("Remove this uploaded book and its PDF from this browser?")) return;
+      if (!confirm(flaskBackendEnabled
+        ? "Remove this book and its private PDF and cover from the server?"
+        : "Remove this uploaded book and its PDF from this browser?")) return;
       try {
-        await deleteUpload(deleteButton.dataset.delete);
-        setWatchlist(getWatchlist().filter(id => id !== deleteButton.dataset.delete));
+        if (flaskBackendEnabled) {
+          await apiRequest(`/api/uploads/${encodeURIComponent(deleteButton.dataset.delete)}`, { method: "DELETE" });
+          serverWatchlist = serverWatchlist.filter(id => id !== deleteButton.dataset.delete);
+        } else {
+          await deleteUpload(deleteButton.dataset.delete);
+          await setWatchlist(getWatchlist().filter(id => id !== deleteButton.dataset.delete));
+        }
         await refreshBooks();
       } catch (error) {
         console.error("Removing uploaded book failed.", error);
@@ -516,12 +667,23 @@ function bindCommonControls() {
       }
     }
   });
-  document.getElementById("book-detail")?.addEventListener("click", event => {
+  document.getElementById("book-detail")?.addEventListener("click", async event => {
     const watch = event.target.closest("[data-watch]");
     if (watch) {
+      if (flaskBackendEnabled && !currentUser) {
+        document.getElementById("book-dialog")?.close();
+        showAccountDialog();
+        return;
+      }
       const id = watch.dataset.watch;
       const saved = getWatchlist();
-      setWatchlist(saved.includes(id) ? saved.filter(bookId => bookId !== id) : [...saved, id]);
+      try {
+        await setWatchlist(saved.includes(id) ? saved.filter(bookId => bookId !== id) : [...saved, id]);
+      } catch (error) {
+        console.error("Updating the watchlist failed.", error);
+        alert(error.message);
+        return;
+      }
       const book = allBooks.find(item => item.id === id);
       if (book) openBookDetails(book);
       renderBooks();
@@ -535,12 +697,25 @@ function bindCommonControls() {
   });
 }
 
+async function initializeLibrary() {
+  if (flaskBackendEnabled) {
+    const result = await apiRequest("/api/me");
+    currentUser = result.user;
+    if (currentUser) serverWatchlist = (await apiRequest("/api/watchlist")).ids;
+    const reviewNote = document.querySelector(".review-storage-note");
+    if (reviewNote) reviewNote.textContent = "Reviews are shared with visitors using this Flask server.";
+  }
+  updateProfileLink();
+  applyLanguage(activeLanguage);
+  const accountButton = document.getElementById("account-button");
+  if (accountButton && getAccountEmail()) accountButton.textContent = translations[activeLanguage].logout;
+  await refreshBooks();
+}
+
 applyLanguage(activeLanguage);
 bindCommonControls();
-const accountButton = document.getElementById("account-button");
-if (accountButton && getAccountEmail()) accountButton.textContent = translations[activeLanguage].logout;
-refreshBooks().catch(error => {
+initializeLibrary().catch(error => {
   console.error("Loading the book library failed.", error);
   const grid = document.getElementById("book-grid");
-  if (grid) grid.innerHTML = `<p class="form-message">${escapeHtml(error.message || "Could not load books from this browser.")}</p>`;
+  if (grid) grid.innerHTML = `<p class="form-message">${escapeHtml(error.message || "Could not connect to the library server. Start it with py app.py and reload this page.")}</p>`;
 });
