@@ -337,7 +337,7 @@ function updateHomeGreeting(name = getSignedInName()) {
     return;
   }
   const hour = new Date().getHours();
-  const timeOfDay = hour < 12 ? "morning" : hour < 17 ? "afternoon" : "night";
+  const timeOfDay = hour < 12 ? "morning" : hour < 17 ? "afternoon" : hour < 21 ? "evening" : "night";
   greeting.textContent = `Good ${timeOfDay}, ${name}!`;
   greeting.classList.remove("hidden");
 }
