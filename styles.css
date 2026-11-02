@@ -44,6 +44,7 @@ button { color: inherit; }
 .hero-copy { padding: 2px 0 0 18px; }
 .eyebrow { color: #78836f; font-size: 9px; font-weight: 700; letter-spacing: 1.7px; }
 .eyebrow-dot { width: 6px; height: 6px; display: inline-block; margin: 0 8px 1px 0; border-radius: 50%; background: #d58e72; }
+.personal-greeting { margin: 18px 0 -12px; color: #728367; font: 600 17px/1.4 var(--serif); }
 h1, h2, h3, p { margin-top: 0; }
 .hero h1, .subpage-hero h1 { margin: 19px 0 13px; color: #263a30; font: 500 clamp(43px, 5vw, 61px)/1.12 var(--serif); letter-spacing: -1.6px; }
 h1 em { color: #728367; font-weight: 500; }

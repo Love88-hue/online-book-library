@@ -302,19 +302,39 @@ function updateBackendCopy() {
 
 function updateProfileLink() {
   const link = document.getElementById("profile-link");
-  if (!link) return;
-  link.classList.remove("hidden");
-  let name = currentUser?.name || "";
-  if (!flaskBackendEnabled) {
-    const email = getAccountEmail();
-    try {
-      const accounts = JSON.parse(localStorage.getItem("obl_accounts") || "{}");
-      name = accounts[email]?.name || "";
-    } catch (error) {
-      console.error("Could not read the signed-in account name.", error);
-    }
+  const name = getSignedInName();
+  if (link) {
+    link.classList.remove("hidden");
+    link.textContent = name ? `My profile · ${name}` : "My profile";
   }
-  link.textContent = name ? `My profile · ${name}` : "My profile";
+  updateHomeGreeting(name);
+}
+
+function getSignedInName() {
+  const email = getAccountEmail();
+  if (!email) return "";
+  if (flaskBackendEnabled) return currentUser?.name?.trim() || email.split("@")[0];
+  try {
+    const accounts = JSON.parse(localStorage.getItem("obl_accounts") || "{}");
+    return accounts[email]?.name?.trim() || email.split("@")[0];
+  } catch (error) {
+    console.error("Could not read the signed-in account name.", error);
+  }
+  return "";
+}
+
+function updateHomeGreeting(name = getSignedInName()) {
+  const greeting = document.getElementById("personal-greeting");
+  if (!greeting) return;
+  if (!name) {
+    greeting.textContent = "";
+    greeting.classList.add("hidden");
+    return;
+  }
+  const hour = new Date().getHours();
+  const timeOfDay = hour < 12 ? "morning" : hour < 17 ? "afternoon" : "evening";
+  greeting.textContent = `Good ${timeOfDay}, ${name}!`;
+  greeting.classList.remove("hidden");
 }
 
 function getVisibleBooks() {
@@ -625,8 +645,9 @@ function bindCommonControls() {
       const button = document.getElementById("account-button");
       if (button) button.textContent = translations[activeLanguage].logout;
       await refreshBooks();
-      if (flaskBackendEnabled && location.pathname !== "/profile.html") {
-        location.assign("/profile.html");
+      const isHomePage = location.pathname === "/" || location.pathname.endsWith("/index.html");
+      if (!isHomePage) {
+        location.assign(flaskBackendEnabled ? "/" : "index.html");
       }
     } catch (error) {
       setMessage(message, error.message || "Could not sign in. Please try again.");
