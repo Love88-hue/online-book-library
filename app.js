@@ -591,7 +591,6 @@ function bindCommonControls() {
         currentUser = result.user;
         serverWatchlist = (await apiRequest("/api/watchlist")).ids;
         updateProfileLink();
-        window.dispatchEvent(new Event("obl-auth-changed"));
       } else {
         const accounts = JSON.parse(localStorage.getItem("obl_accounts") || "{}");
         if (accountMode === "signup") {
@@ -605,6 +604,7 @@ function bindCommonControls() {
         }
         localStorage.setItem("obl_session", email);
       }
+      window.dispatchEvent(new Event("obl-auth-changed"));
       document.getElementById("account-dialog").close();
       form.reset();
       const button = document.getElementById("account-button");
