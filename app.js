@@ -103,7 +103,7 @@ const translations = {
 
 const categoryColors = ["#718568", "#bd8068", "#7c8294", "#b69866", "#6c8a83", "#986f7d", "#8e795e", "#6e7989"];
 const databaseName = "online-book-library";
-const flaskBackendEnabled = ["localhost", "127.0.0.1"].includes(location.hostname) && location.port === "5000";
+const flaskBackendEnabled = location.protocol !== "file:" && !location.hostname.endsWith(".github.io");
 let allBooks = [...seedBooks];
 let activeTab = "discover";
 let selectedCategory = "all";

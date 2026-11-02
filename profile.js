@@ -1,4 +1,4 @@
-const profileBackendEnabled = ["localhost", "127.0.0.1"].includes(location.hostname) && location.port === "5000";
+const profileBackendEnabled = location.protocol !== "file:" && !location.hostname.endsWith(".github.io");
 
 async function profileRequest(path, options = {}) {
   const response = await fetch(path, { credentials: "same-origin", ...options });

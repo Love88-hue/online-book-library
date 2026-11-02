@@ -1,5 +1,5 @@
 const reviewsKey = "obl_reviews";
-const flaskReviewsEnabled = ["localhost", "127.0.0.1"].includes(location.hostname) && location.port === "5000";
+const flaskReviewsEnabled = location.protocol !== "file:" && !location.hostname.endsWith(".github.io");
 
 function loadReviews() {
   try {

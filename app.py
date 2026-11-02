@@ -30,8 +30,8 @@ def load_secret_key():
 app = Flask(__name__)
 app.config.update(
     SECRET_KEY=load_secret_key(),
-    DATABASE=str(INSTANCE / "library.db"),
-    UPLOAD_FOLDER=str(INSTANCE / "uploads"),
+    DATABASE=os.environ.get("DATABASE_PATH", str(INSTANCE / "library.db")),
+    UPLOAD_FOLDER=os.environ.get("UPLOAD_FOLDER", str(INSTANCE / "uploads")),
     MAX_CONTENT_LENGTH=36 * 1024 * 1024,
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE="Lax",
@@ -176,6 +176,12 @@ def current_user():
         session.clear()
         return jsonify(user=None)
     return jsonify(user=user_json(user))
+
+
+@app.get("/api/health")
+def health_check():
+    get_db().execute("SELECT 1").fetchone()
+    return jsonify(status="ok")
 
 
 @app.post("/api/signup")
