@@ -310,13 +310,18 @@ function updateProfileLink() {
   updateHomeGreeting(name);
 }
 
+function formatDisplayName(name) {
+  const trimmedName = String(name || "").trim();
+  return trimmedName ? trimmedName[0].toLocaleUpperCase() + trimmedName.slice(1) : "";
+}
+
 function getSignedInName() {
   const email = getAccountEmail();
   if (!email) return "";
-  if (flaskBackendEnabled) return currentUser?.name?.trim() || email.split("@")[0];
+  if (flaskBackendEnabled) return formatDisplayName(currentUser?.name || email.split("@")[0]);
   try {
     const accounts = JSON.parse(localStorage.getItem("obl_accounts") || "{}");
-    return accounts[email]?.name?.trim() || email.split("@")[0];
+    return formatDisplayName(accounts[email]?.name || email.split("@")[0]);
   } catch (error) {
     console.error("Could not read the signed-in account name.", error);
   }

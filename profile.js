@@ -53,9 +53,10 @@ async function renderProfile() {
       const booksById = new Map([...catalog, ...uploads].map(book => [book.id, book]));
       const savedBooks = watchlistIds.map(id => booksById.get(id) || { id, title: "Saved book", author: "Library collection" });
       const localUploads = uploads.map((book, index) => ({ ...book, pdfUrl: profilePdfUrls[index] }));
-      document.getElementById("profile-name").textContent = account.name || email;
+      const displayName = formatDisplayName(account.name || email);
+      document.getElementById("profile-name").textContent = displayName;
       document.getElementById("profile-email").textContent = email;
-      document.getElementById("profile-avatar").textContent = (account.name || email).trim().charAt(0).toUpperCase() || "✳";
+      document.getElementById("profile-avatar").textContent = displayName.charAt(0) || "✳";
       document.getElementById("watchlist-count").textContent = String(savedBooks.length);
       document.getElementById("uploads-count").textContent = String(localUploads.length);
       document.getElementById("profile-watchlist").innerHTML = savedBooks.length
@@ -91,9 +92,10 @@ async function renderProfile() {
     const allBooks = [...catalog, ...uploads];
     const booksById = new Map(allBooks.map(book => [book.id, book]));
     const savedBooks = watchlistIds.map(id => booksById.get(id) || { id, title: "Saved book", author: "Library collection" });
-    document.getElementById("profile-name").textContent = user.name;
+    const displayName = formatDisplayName(user.name || user.email);
+    document.getElementById("profile-name").textContent = displayName;
     document.getElementById("profile-email").textContent = user.email;
-    document.getElementById("profile-avatar").textContent = user.name.trim().charAt(0).toUpperCase() || "✳";
+    document.getElementById("profile-avatar").textContent = displayName.charAt(0) || "✳";
     document.getElementById("watchlist-count").textContent = String(savedBooks.length);
     document.getElementById("uploads-count").textContent = String(uploads.length);
     document.getElementById("profile-watchlist").innerHTML = savedBooks.length
