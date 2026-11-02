@@ -27,4 +27,4 @@ The repository includes `render.yaml` for a Flask web service with Gunicorn, HTT
 4. Wait for the deploy and health check to succeed. Render provides an HTTPS `onrender.com` URL.
 5. Use that Render URL for signup, login, profiles, uploads, and reviews. The Flask app serves the frontend on the same origin so secure login cookies work.
 
-GitHub Pages remains a separate static frontend; it cannot run Flask or access the Render login session. The Render service uses its own database and uploaded files, separate from this computer's local `instance` folder. Do not expose the Flask development server directly to the internet.
+GitHub Pages remains a separate static frontend; it cannot run Flask or access the Render login session. Its demo accounts, profile details, watchlists, and PDF uploads are stored only in each visitor's browser and are not secure shared accounts. The Render service uses its own database and uploaded files, separate from this computer's local `instance` folder. Do not expose the Flask development server directly to the internet.

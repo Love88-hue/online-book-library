@@ -302,7 +302,19 @@ function updateBackendCopy() {
 
 function updateProfileLink() {
   const link = document.getElementById("profile-link");
-  if (link) link.classList.remove("hidden");
+  if (!link) return;
+  link.classList.remove("hidden");
+  let name = currentUser?.name || "";
+  if (!flaskBackendEnabled) {
+    const email = getAccountEmail();
+    try {
+      const accounts = JSON.parse(localStorage.getItem("obl_accounts") || "{}");
+      name = accounts[email]?.name || "";
+    } catch (error) {
+      console.error("Could not read the signed-in account name.", error);
+    }
+  }
+  link.textContent = name ? `My profile · ${name}` : "My profile";
 }
 
 function getVisibleBooks() {
@@ -431,6 +443,8 @@ async function showAccountDialog() {
       }
     } else {
       localStorage.removeItem("obl_session");
+      updateProfileLink();
+      window.dispatchEvent(new Event("obl-auth-changed"));
     }
     if (accountButton) accountButton.textContent = translations[activeLanguage].login;
     setActiveTab(activeTab);
@@ -604,6 +618,7 @@ function bindCommonControls() {
         }
         localStorage.setItem("obl_session", email);
       }
+      updateProfileLink();
       window.dispatchEvent(new Event("obl-auth-changed"));
       document.getElementById("account-dialog").close();
       form.reset();
