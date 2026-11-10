@@ -77,7 +77,7 @@ window.libraryBookCatalog = seedBooks.map(({ id, title, author, category, year, 
 const translations = {
   en: {
     navHome: "Discover", navBrowse: "Browse books", navAbout: "About", navReviews: "Reviews",
-    donate: "Donate", login: "Log in", logout: "Log out", heroEyebrow: "YOUR NEXT CHAPTER STARTS HERE",
+    donate: "Donate", login: "Log in", logout: "Log out", profileLink: "My profile", footerDonate: "Donate a book", heroEyebrow: "YOUR NEXT CHAPTER STARTS HERE",
     heroTitle: "A little more<br><em>wonder,</em> every day.", heroDescription: "Find a quiet corner, discover a new favorite, and let a good book take you somewhere lovely.",
     exploreBooks: "Explore the library", heroNote: "A cozy corner for curious minds", libraryEyebrow: "A SHELF FOR EVERY MOOD",
     libraryTitle: "Find your next favorite", addBook: "Add book + PDF", tabDiscover: "Discover",
@@ -85,11 +85,19 @@ const translations = {
     emptyTitle: "Nothing on this shelf just yet", emptyDescription: "Try another search, or save a book to your watchlist.",
     showAll: "Show all books ↗", shareEyebrow: "GOOD STORIES GROW WHEN SHARED",
     shareTitle: "Have a book to pass along?", shareDescription: "Add a PDF and its cover to your personal library shelf. Your files stay on this device.",
+    assistantTitle: "Book assistant", assistantSubtitle: "Your friendly library guide",
+    assistantWelcome: "Hi! Tell me what you enjoy, or ask for a genre, author, or book from our library.",
+    assistantInputLabel: "Ask about books", assistantPlaceholder: "Ask me about books…", assistantSend: "Send",
+    assistantPrivacy: "Replies use this library's catalog. Your messages stay in this browser.",
+    assistantOpen: "Ask the book assistant", assistantMystery: "Mystery",
+    assistantAdventure: "Adventure", assistantBrowse: "Browse the library",
+    assistantClear: "Clear conversation", assistantClose: "Close chat",
+    assistantRegion: "AI book assistant", assistantPanel: "Book assistant chat",
     shareButton: "Upload PDF + cover", footerLine: "Made for slow mornings and one-more-chapter nights."
   },
   hi: {
     navHome: "खोजें", navBrowse: "किताबें देखें", navAbout: "हमारे बारे में", navReviews: "समीक्षाएँ",
-    donate: "दान करें", login: "लॉग इन", logout: "लॉग आउट", heroEyebrow: "आपका अगला अध्याय यहाँ शुरू होता है",
+    donate: "दान करें", login: "लॉग इन", logout: "लॉग आउट", profileLink: "मेरी प्रोफ़ाइल", footerDonate: "किताब दान करें", heroEyebrow: "आपका अगला अध्याय यहाँ शुरू होता है",
     heroTitle: "हर दिन थोड़ा और<br><em>अचरज।</em>", heroDescription: "एक शांत कोना खोजें, नई पसंदीदा किताब ढूँढ़ें और कहानी के साथ कहीं दूर निकल जाएँ।",
     exploreBooks: "पुस्तकालय देखें", heroNote: "जिज्ञासु मन के लिए एक प्यारा कोना", libraryEyebrow: "हर मन के लिए एक किताब",
     libraryTitle: "अपनी अगली पसंदीदा किताब खोजें", addBook: "किताब + PDF जोड़ें", tabDiscover: "खोजें",
@@ -97,7 +105,68 @@ const translations = {
     emptyTitle: "इस शेल्फ़ पर अभी कुछ नहीं है", emptyDescription: "दूसरी खोज आज़माएँ या किताब को अपनी सूची में जोड़ें।",
     showAll: "सभी किताबें देखें ↗", shareEyebrow: "अच्छी कहानियाँ बाँटने से बढ़ती हैं",
     shareTitle: "कोई किताब साझा करना चाहेंगे?", shareDescription: "PDF और उसका कवर अपनी लाइब्रेरी में जोड़ें। आपकी फ़ाइलें इसी डिवाइस पर रहेंगी।",
+    assistantTitle: "किताब सहायक", assistantSubtitle: "आपकी लाइब्रेरी गाइड",
+    assistantWelcome: "नमस्ते! अपनी पसंद बताएँ या हमारी लाइब्रेरी में शैली, लेखक या किताब खोजें।",
+    assistantInputLabel: "किताबों के बारे में पूछें", assistantPlaceholder: "किताबों के बारे में पूछें…", assistantSend: "भेजें",
+    assistantPrivacy: "जवाब इस लाइब्रेरी की किताबों से मिलते हैं। आपके संदेश इसी ब्राउज़र में रहते हैं।",
+    assistantOpen: "किताब सहायक से पूछें", assistantMystery: "रहस्य",
+    assistantAdventure: "रोमांच", assistantBrowse: "लाइब्रेरी देखें",
+    assistantClear: "बातचीत साफ़ करें", assistantClose: "चैट बंद करें",
+    assistantRegion: "किताब सहायक", assistantPanel: "किताब सहायक चैट",
     shareButton: "PDF + कवर अपलोड करें", footerLine: "धीमी सुबहों और एक और अध्याय वाली रातों के लिए।"
+  },
+  pa: {
+    navHome: "ਖੋਜੋ", navBrowse: "ਕਿਤਾਬਾਂ ਵੇਖੋ", navAbout: "ਸਾਡੇ ਬਾਰੇ", navReviews: "ਸਮੀਖਿਆਵਾਂ",
+    donate: "ਦਾਨ ਕਰੋ", login: "ਲੌਗ ਇਨ", logout: "ਲੌਗ ਆਉਟ", heroEyebrow: "ਤੁਹਾਡਾ ਅਗਲਾ ਅਧਿਆਇ ਇੱਥੋਂ ਸ਼ੁਰੂ ਹੁੰਦਾ ਹੈ",
+    heroTitle: "ਹਰ ਦਿਨ ਥੋੜ੍ਹਾ ਹੋਰ<br><em>ਅਚੰਭਾ।</em>", heroDescription: "ਇੱਕ ਸ਼ਾਂਤ ਕੋਨਾ ਲੱਭੋ, ਨਵੀਂ ਮਨਪਸੰਦ ਕਿਤਾਬ ਖੋਜੋ ਅਤੇ ਕਹਾਣੀ ਨਾਲ ਕਿਸੇ ਸੋਹਣੀ ਦੁਨੀਆ ਵਿੱਚ ਚਲੇ ਜਾਓ।",
+    exploreBooks: "ਲਾਇਬ੍ਰੇਰੀ ਵੇਖੋ", heroNote: "ਜਿਗਿਆਸੂ ਮਨਾਂ ਲਈ ਇੱਕ ਨਿੱਘਾ ਕੋਨਾ", libraryEyebrow: "ਹਰ ਮਿਜ਼ਾਜ ਲਈ ਇੱਕ ਸ਼ੈਲਫ਼",
+    libraryTitle: "ਆਪਣੀ ਅਗਲੀ ਮਨਪਸੰਦ ਕਿਤਾਬ ਲੱਭੋ", addBook: "ਕਿਤਾਬ + PDF ਜੋੜੋ", tabDiscover: "ਖੋਜੋ",
+    tabWatchlist: "ਮੇਰੀ ਸੂਚੀ", searchPlaceholder: "ਸਿਰਲੇਖ ਜਾਂ ਲੇਖਕ ਲੱਭੋ…", allCategories: "ਸਾਰੀਆਂ ਸ਼੍ਰੇਣੀਆਂ",
+    emptyTitle: "ਇਸ ਸ਼ੈਲਫ਼ 'ਤੇ ਹਾਲੇ ਕੁਝ ਨਹੀਂ", emptyDescription: "ਕੋਈ ਹੋਰ ਖੋਜ ਅਜ਼ਮਾਓ ਜਾਂ ਕਿਤਾਬ ਆਪਣੀ ਸੂਚੀ ਵਿੱਚ ਸੰਭਾਲੋ।",
+    showAll: "ਸਾਰੀਆਂ ਕਿਤਾਬਾਂ ਵੇਖੋ ↗", shareEyebrow: "ਚੰਗੀਆਂ ਕਹਾਣੀਆਂ ਸਾਂਝੀਆਂ ਕਰਨ ਨਾਲ ਵਧਦੀਆਂ ਹਨ",
+    shareTitle: "ਕੀ ਤੁਹਾਡੇ ਕੋਲ ਸਾਂਝੀ ਕਰਨ ਲਈ ਕਿਤਾਬ ਹੈ?", shareDescription: "ਆਪਣੀ ਲਾਇਬ੍ਰੇਰੀ ਵਿੱਚ PDF ਅਤੇ ਕਵਰ ਜੋੜੋ। ਤੁਹਾਡੀਆਂ ਫ਼ਾਈਲਾਂ ਇਸੇ ਡਿਵਾਈਸ 'ਤੇ ਰਹਿਣਗੀਆਂ।",
+    assistantTitle: "ਕਿਤਾਬ ਸਹਾਇਕ", assistantSubtitle: "ਤੁਹਾਡੀ ਆਪਣੀ ਲਾਇਬ੍ਰੇਰੀ ਗਾਈਡ",
+    assistantWelcome: "ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਆਪਣੀ ਪਸੰਦ ਦੱਸੋ ਜਾਂ ਸਾਡੀ ਲਾਇਬ੍ਰੇਰੀ ਵਿੱਚ ਸ਼ੈਲੀ, ਲੇਖਕ ਜਾਂ ਕਿਤਾਬ ਬਾਰੇ ਪੁੱਛੋ।",
+    assistantInputLabel: "ਕਿਤਾਬਾਂ ਬਾਰੇ ਪੁੱਛੋ", assistantPlaceholder: "ਕਿਤਾਬਾਂ ਬਾਰੇ ਪੁੱਛੋ…", assistantSend: "ਭੇਜੋ",
+    assistantPrivacy: "ਜਵਾਬ ਇਸ ਲਾਇਬ੍ਰੇਰੀ ਦੀ ਸੂਚੀ ਤੋਂ ਮਿਲਦੇ ਹਨ। ਤੁਹਾਡੇ ਸੁਨੇਹੇ ਇਸੇ ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ ਰਹਿੰਦੇ ਹਨ।",
+    assistantOpen: "ਕਿਤਾਬ ਸਹਾਇਕ ਨੂੰ ਪੁੱਛੋ", assistantMystery: "ਰਹੱਸ", assistantAdventure: "ਰੋਮਾਂਚ",
+    assistantBrowse: "ਲਾਇਬ੍ਰੇਰੀ ਵੇਖੋ", shareButton: "PDF + ਕਵਰ ਅੱਪਲੋਡ ਕਰੋ",
+    assistantClear: "ਗੱਲਬਾਤ ਮਿਟਾਓ", assistantClose: "ਚੈਟ ਬੰਦ ਕਰੋ",
+    assistantRegion: "ਕਿਤਾਬ ਸਹਾਇਕ", assistantPanel: "ਕਿਤਾਬ ਸਹਾਇਕ ਚੈਟ",
+    footerLine: "ਹੌਲੀ ਸਵੇਰਾਂ ਅਤੇ ਇੱਕ ਹੋਰ ਅਧਿਆਇ ਵਾਲੀਆਂ ਰਾਤਾਂ ਲਈ।", footerDonate: "ਕਿਤਾਬ ਦਾਨ ਕਰੋ",
+    aboutEyebrow: "ਕਿਤਾਬਾਂ ਦੇ ਪ੍ਰੇਮੀਆਂ ਲਈ ਇੱਕ ਘਰ", aboutTitle: "ਕਹਾਣੀਆਂ ਹੋਰ ਸੋਹਣੀਆਂ ਹੁੰਦੀਆਂ ਹਨ<br><em>ਜਦੋਂ ਸਾਂਝੀਆਂ ਹੋਣ।</em>",
+    aboutDescription: "ਅਸੀਂ ਕਿਤਾਬਾਂ ਖੋਜਣ, ਆਪਣੀਆਂ ਪਸੰਦੀਦਾ ਕਿਤਾਬਾਂ ਸੰਭਾਲਣ ਅਤੇ ਚੰਗੀਆਂ ਕਹਾਣੀਆਂ ਸਾਂਝੀਆਂ ਕਰਨ ਲਈ ਇੰਟਰਨੈੱਟ 'ਤੇ ਇੱਕ ਨਿੱਘਾ ਕੋਨਾ ਬਣਾਇਆ ਹੈ।",
+    aboutIdea: "ਸਾਡਾ ਛੋਟਾ ਜਿਹਾ ਵਿਚਾਰ", aboutIdeaTitle: "ਘੱਟ ਸਕ੍ਰੋਲਿੰਗ।<br>ਵੱਧ ਪੜ੍ਹਾਈ।",
+    aboutCollection: "Online Book Library 60 ਕਲਾਸਿਕ ਅਤੇ ਹਰਮਨਪਿਆਰੀਆਂ ਕਿਤਾਬਾਂ ਦੀ ਇੱਕ ਸਾਦੀ ਤੇ ਸੁਆਗਤਯੋਗ ਸੂਚੀ ਹੈ। ਨਾਮ ਨਾਲ ਖੋਜੋ, ਸ਼੍ਰੇਣੀ ਅਨੁਸਾਰ ਵੇਖੋ ਜਾਂ ਕਿਤਾਬ ਨੂੰ ਬਾਅਦ ਲਈ ਆਪਣੀ ਸੂਚੀ ਵਿੱਚ ਰੱਖੋ।",
+    aboutSharing: "ਕੋਈ ਕਿਤਾਬ ਸਾਂਝੀ ਕਰਨੀ ਹੈ? ਆਪਣੀ ਸ਼ੈਲਫ਼ 'ਤੇ PDF ਅਤੇ ਕਵਰ ਜੋੜੋ। ਇਸ ਡੈਮੋ ਵਿੱਚ ਅੱਪਲੋਡ ਇਸੇ ਡਿਵਾਈਸ ਅਤੇ ਬ੍ਰਾਊਜ਼ਰ 'ਤੇ ਰਹਿੰਦੇ ਹਨ।",
+    aboutQuote: "ਇੱਕ ਚੰਗੀ ਕਿਤਾਬ ਦੁਨੀਆ ਨੂੰ ਨਵੇਂ ਢੰਗ ਨਾਲ ਵੇਖਣ ਦਾ ਸ਼ਾਂਤ ਸੱਦਾ ਹੈ।", aboutMotto: "ਲਾਇਬ੍ਰੇਰੀ ਦਾ ਛੋਟਾ ਜਿਹਾ ਮੰਤਵ",
+    aboutValuesTitle1: "ਕੁਦਰਤੀ ਜਿਗਿਆਸਾ", aboutValuesText1: "ਹਰ ਮਿਜ਼ਾਜ, ਹਰ ਪਲ ਅਤੇ ਹਰ ਪਾਠਕ ਲਈ ਇੱਕ ਕਹਾਣੀ ਹੈ।",
+    aboutValuesTitle2: "ਸਾਂਝਾ ਕਰਨ ਲਈ", aboutValuesText2: "ਆਪਣੀ ਸੂਚੀ ਸੰਭਾਲੋ ਜਾਂ ਉਹ ਕਿਤਾਬ ਕਿਸੇ ਨਾਲ ਸਾਂਝੀ ਕਰੋ ਜਿਸਨੂੰ ਉਹ ਪਸੰਦ ਆਵੇਗੀ।",
+    aboutValuesTitle3: "ਸੱਚੀ ਨਿੱਜਤਾ", aboutValuesText3: "ਇਹ ਡੈਮੋ ਤੁਹਾਡੀਆਂ ਫ਼ਾਈਲਾਂ ਅਤੇ ਪਸੰਦਾਂ ਇਸੇ ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ ਰੱਖਦਾ ਹੈ। ਇਸ ਵਿੱਚ ਕਲਾਉਡ ਖਾਤਾ ਜਾਂ ਭੁਗਤਾਨ ਸੇਵਾ ਨਹੀਂ ਹੈ।",
+    aboutCtaEyebrow: "ਨਵੀਂ ਕਹਾਣੀ ਵੱਲ ਚੱਲੀਏ?", aboutCtaTitle: "ਤੁਹਾਡੀ ਅਗਲੀ ਮਨਪਸੰਦ ਕਿਤਾਬ ਉਡੀਕ ਰਹੀ ਹੈ।",
+    aboutCtaText: "ਸ਼ੈਲਫ਼ਾਂ ਵਿੱਚ ਵੇਖੋ ਅਤੇ ਜਾਣੋ ਕਿ ਕਹਾਣੀ ਤੁਹਾਨੂੰ ਕਿੱਥੇ ਲੈ ਜਾਂਦੀ ਹੈ।",
+    reviewsEyebrow: "ਪੜ੍ਹਨ ਵਾਲੇ ਕੋਨੇ ਤੋਂ ਇੱਕ ਸੁਨੇਹਾ", reviewsTitle: "ਹਰ ਪਾਠਕ ਕੋਲ<br><em>ਸੁਣਾਉਣ ਲਈ ਕਹਾਣੀ ਹੈ।</em>",
+    reviewsDescription: "ਲਾਇਬ੍ਰੇਰੀ ਬਾਰੇ ਆਪਣੀ ਰਾਏ ਦਿਓ ਜਾਂ ਕਿਸੇ ਹੋਰ ਕਿਤਾਬ-ਪ੍ਰੇਮੀ ਲਈ ਛੋਟਾ ਜਿਹਾ ਸੁਨੇਹਾ ਛੱਡੋ।",
+    reviewsListEyebrow: "ਪਿਆਰੇ ਸ਼ਬਦ ਅਤੇ ਕਿਤਾਬੀ ਵਿਚਾਰ", reviewsListTitle: "ਪਾਠਕਾਂ ਦੇ ਸੁਨੇਹੇ",
+    reviewsFormEyebrow: "ਇੱਕ ਛੋਟਾ ਸੁਨੇਹਾ ਲਿਖੋ", reviewsFormTitle: "ਆਪਣੇ ਵਿਚਾਰ ਸਾਂਝੇ ਕਰੋ",
+    reviewsName: "ਤੁਹਾਡਾ ਨਾਮ", reviewsNamePlaceholder: "ਅਸੀਂ ਤੁਹਾਨੂੰ ਕੀ ਕਹੀਏ?",
+    reviewsRating: "ਤੁਹਾਡੀ ਰੇਟਿੰਗ", reviewsLoved: "★★★★★ — ਬਹੁਤ ਪਸੰਦ ਆਈ",
+    reviewsEnjoyed: "★★★★☆ — ਕਾਫ਼ੀ ਚੰਗੀ ਲੱਗੀ", reviewsLovely: "★★★☆☆ — ਸੋਹਣੀ ਹੈ",
+    reviewsBetter: "★★☆☆☆ — ਹੋਰ ਚੰਗੀ ਹੋ ਸਕਦੀ ਸੀ", reviewsNotForMe: "★☆☆☆☆ — ਮੇਰੇ ਲਈ ਨਹੀਂ",
+    reviewsYourReview: "ਤੁਹਾਡੀ ਸਮੀਖਿਆ", reviewsPlaceholder: "ਕੋਈ ਪਸੰਦੀਦਾ ਗੱਲ, ਲੱਭੀ ਹੋਈ ਕਿਤਾਬ ਜਾਂ ਸਿਰਫ਼ ਸਤ ਸ੍ਰੀ ਅਕਾਲ…",
+    reviewsPrivacy: "ਇਸ ਡੈਮੋ ਵਿੱਚ ਸਮੀਖਿਆਵਾਂ ਸਿਰਫ਼ ਇਸ ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ ਸੰਭਾਲੀਆਂ ਜਾਂਦੀਆਂ ਹਨ; ਇਹ ਸਾਂਝੀ ਵੈੱਬਸਾਈਟ 'ਤੇ ਪ੍ਰਕਾਸ਼ਿਤ ਨਹੀਂ ਹੁੰਦੀਆਂ।",
+    reviewsSubmit: "ਆਪਣਾ ਸੁਨੇਹਾ ਭੇਜੋ", reviewsCtaEyebrow: "ਇੱਕ ਕਹਾਣੀ ਤੁਹਾਡੀ ਉਡੀਕ ਕਰ ਰਹੀ ਹੈ",
+    reviewsCtaTitle: "ਆਓ ਤੁਹਾਡੀ ਅਗਲੀ ਕਿਤਾਬ ਲੱਭੀਏ।", reviewsCtaText: "ਸ਼ੈਲਫ਼ਾਂ ਵਿੱਚ ਘੁੰਮੋ ਅਤੇ ਕੋਈ ਕਹਾਣੀ ਬਾਅਦ ਲਈ ਸੰਭਾਲੋ।",
+    profileEyebrow: "ਤੁਹਾਡਾ ਆਪਣਾ ਪੜ੍ਹਨ ਵਾਲਾ ਕੋਨਾ", profileTitle: "ਮੇਰੀ <em>ਪ੍ਰੋਫ਼ਾਈਲ।</em>",
+    profileDescription: "ਤੁਹਾਡੇ ਖਾਤੇ ਦੇ ਵੇਰਵੇ, ਸੰਭਾਲੀਆਂ ਕਹਾਣੀਆਂ ਅਤੇ ਨਿੱਜੀ ਅੱਪਲੋਡ ਕੀਤੀਆਂ ਕਿਤਾਬਾਂ—ਸਭ ਇੱਕ ਥਾਂ।",
+    profileSigninTitle: "ਪ੍ਰੋਫ਼ਾਈਲ ਵੇਖਣ ਲਈ ਲੌਗ ਇਨ ਕਰੋ",
+    profileSigninText: "ਤੁਹਾਡੀ ਕਿਤਾਬਾਂ ਦੀ ਸੂਚੀ ਅਤੇ ਅੱਪਲੋਡ ਕੀਤੀਆਂ ਕਿਤਾਬਾਂ ਸਿਰਫ਼ ਤੁਹਾਡੇ ਖਾਤੇ ਲਈ ਹਨ।",
+    profileSigninButton: "ਲੌਗ ਇਨ / ਖਾਤਾ ਬਣਾਓ", profileAccount: "ਖਾਤੇ ਦੇ ਵੇਰਵੇ",
+    profileSaved: "ਸੰਭਾਲੀਆਂ", profileUploads: "ਅੱਪਲੋਡ", profileSavedEyebrow: "ਬਾਅਦ ਲਈ ਸੰਭਾਲੀਆਂ",
+    profileWatchlist: "ਮੇਰੀ ਸੂਚੀ", profileBrowse: "ਕਿਤਾਬਾਂ ਵੇਖੋ ↗", profileLink: "ਮੇਰੀ ਪ੍ਰੋਫ਼ਾਈਲ",
+    profilePrivateEyebrow: "ਤੁਹਾਡੀਆਂ ਨਿੱਜੀ ਕਿਤਾਬਾਂ", profileMyUploads: "ਮੇਰੇ ਅੱਪਲੋਡ",
+    profileAddBook: "ਕਿਤਾਬ ਜੋੜੋ ↗",
+    profilePrivacy: "ਤੁਹਾਡੀਆਂ PDF, ਕਵਰ ਅਤੇ ਕਿਤਾਬਾਂ ਦੀ ਸੂਚੀ ਇਸ ਕੰਪਿਊਟਰ ਦੇ Flask ਸਰਵਰ 'ਤੇ ਤੁਹਾਡੇ ਖਾਤੇ ਲਈ ਨਿੱਜੀ ਹਨ।"
   }
 };
 
@@ -247,20 +316,35 @@ function setMessage(element, message, success = false) {
 }
 
 function applyLanguage(language) {
-  activeLanguage = language === "hi" ? "hi" : "en";
+  activeLanguage = ["hi", "pa"].includes(language) ? language : "en";
   localStorage.setItem("obl_language", activeLanguage);
   document.documentElement.lang = activeLanguage;
   document.querySelectorAll("[data-i18n]").forEach(element => {
-    const translated = translations[activeLanguage][element.dataset.i18n];
-    if (translated) element.innerHTML = translated;
+    if (!("defaultTranslation" in element.dataset)) element.dataset.defaultTranslation = element.innerHTML;
+    const translated = translations[activeLanguage][element.dataset.i18n] || element.dataset.defaultTranslation;
+    element.innerHTML = translated;
   });
   document.querySelectorAll("[data-i18n-placeholder]").forEach(element => {
-    const translated = translations[activeLanguage][element.dataset.i18nPlaceholder];
-    if (translated) element.placeholder = translated;
+    if (!("defaultPlaceholder" in element.dataset)) element.dataset.defaultPlaceholder = element.placeholder;
+    element.placeholder = translations[activeLanguage][element.dataset.i18nPlaceholder] || element.dataset.defaultPlaceholder;
   });
   const select = document.getElementById("language-select");
   if (select) select.value = activeLanguage;
+  const clearButton = document.getElementById("assistant-clear");
+  if (clearButton) {
+    clearButton.title = translations[activeLanguage].assistantClear;
+    clearButton.setAttribute("aria-label", translations[activeLanguage].assistantClear);
+  }
+  const closeButton = document.getElementById("assistant-close");
+  if (closeButton) closeButton.setAttribute("aria-label", translations[activeLanguage].assistantClose);
+  const sendButton = document.querySelector(".assistant-form button");
+  if (sendButton) sendButton.setAttribute("aria-label", translations[activeLanguage].assistantSend);
+  const assistantRegion = document.querySelector(".book-assistant");
+  if (assistantRegion) assistantRegion.setAttribute("aria-label", translations[activeLanguage].assistantRegion);
+  const assistantPanel = document.getElementById("assistant-panel");
+  if (assistantPanel) assistantPanel.setAttribute("aria-label", translations[activeLanguage].assistantPanel);
   updateBackendCopy();
+  updateProfileLink();
 }
 
 function updateBackendCopy() {
@@ -275,6 +359,17 @@ function updateBackendCopy() {
         privacy: "अपलोड की गई फ़ाइलें निजी हैं और केवल आपके खाते को उपलब्ध हैं।",
         aboutUpload: "अपलोड की गई PDF और कवर इस कंप्यूटर के Flask सर्वर में रखे जाते हैं और केवल आपके खाते को दिखाई देते हैं।",
         aboutPrivacy: "इस Flask सर्वर पर खाते password hashing और सुरक्षित session cookies के साथ चलते हैं। अपलोड केवल मालिक के खाते को दिखाई देते हैं।"
+      }
+    : activeLanguage === "pa"
+      ? {
+        account: "ਤੁਹਾਡਾ ਖਾਤਾ ਇਸ ਕੰਪਿਊਟਰ ਦੇ Flask ਸਰਵਰ 'ਤੇ ਸੁਰੱਖਿਅਤ ਰੱਖਿਆ ਜਾਂਦਾ ਹੈ।",
+        upload: "ਤੁਹਾਡੀ PDF ਅਤੇ ਕਵਰ ਇਸ ਕੰਪਿਊਟਰ 'ਤੇ ਸੰਭਾਲੇ ਜਾਂਦੇ ਹਨ ਅਤੇ ਸਿਰਫ਼ ਤੁਹਾਡੇ ਖਾਤੇ ਨੂੰ ਦਿਖਾਈ ਦਿੰਦੇ ਹਨ।",
+        share: "PDF ਅਤੇ ਕਵਰ ਅੱਪਲੋਡ ਕਰੋ। ਤੁਹਾਡੀਆਂ ਫ਼ਾਈਲਾਂ ਸਿਰਫ਼ ਤੁਹਾਡੇ ਖਾਤੇ ਲਈ ਨਿੱਜੀ ਰਹਿਣਗੀਆਂ।",
+        footnote: "ਅੱਪਲੋਡ ਕੀਤੀਆਂ ਕਿਤਾਬਾਂ ਅਤੇ ਫ਼ਾਈਲਾਂ ਸਿਰਫ਼ ਜੋੜਨ ਵਾਲੇ ਖਾਤੇ ਨੂੰ ਦਿਖਾਈ ਦਿੰਦੀਆਂ ਹਨ।",
+        donate: "ਆਨਲਾਈਨ ਭੁਗਤਾਨ ਹਾਲੇ ਤਿਆਰ ਨਹੀਂ ਹਨ। ਤੁਸੀਂ ਆਪਣੀ ਨਿੱਜੀ ਲਾਇਬ੍ਰੇਰੀ ਵਿੱਚ ਕਿਤਾਬ ਦੀ PDF ਅਤੇ ਕਵਰ ਜੋੜ ਸਕਦੇ ਹੋ।",
+        privacy: "ਅੱਪਲੋਡ ਕੀਤੀਆਂ ਫ਼ਾਈਲਾਂ ਨਿੱਜੀ ਹਨ ਅਤੇ ਸਿਰਫ਼ ਤੁਹਾਡੇ ਖਾਤੇ ਲਈ ਉਪਲਬਧ ਹਨ।",
+        aboutUpload: "ਅੱਪਲੋਡ ਕੀਤੀਆਂ PDF ਅਤੇ ਕਵਰ ਇਸ ਕੰਪਿਊਟਰ ਦੇ Flask ਸਰਵਰ 'ਤੇ ਸੰਭਾਲੇ ਜਾਂਦੇ ਹਨ ਅਤੇ ਸਿਰਫ਼ ਤੁਹਾਡੇ ਖਾਤੇ ਨੂੰ ਦਿਖਾਈ ਦਿੰਦੇ ਹਨ।",
+        aboutPrivacy: "ਇਹ Flask ਸਰਵਰ ਹੈਸ਼ ਕੀਤੇ ਪਾਸਵਰਡ ਅਤੇ ਦਸਤਖ਼ਤ ਕੀਤੀਆਂ ਸੈਸ਼ਨ ਕੂਕੀਜ਼ ਵਰਤਦਾ ਹੈ। ਅੱਪਲੋਡ ਸਿਰਫ਼ ਮਾਲਕ ਦੇ ਖਾਤੇ ਲਈ ਨਿੱਜੀ ਹਨ।"
       }
     : {
         account: "Your account is stored securely by the Flask server on this computer.",
@@ -305,7 +400,7 @@ function updateProfileLink() {
   const name = getSignedInName();
   if (link) {
     link.classList.remove("hidden");
-    link.textContent = name ? `My profile · ${name}` : "My profile";
+    link.textContent = name ? `${translations[activeLanguage].profileLink} · ${name}` : translations[activeLanguage].profileLink;
   }
   updateHomeGreeting(name);
 }
@@ -505,7 +600,131 @@ async function hashPassword(password, salt) {
   return Array.from(new Uint8Array(bits), byte => byte.toString(16).padStart(2, "0")).join("");
 }
 
+function getBookAssistantReply(message) {
+  const hindi = activeLanguage === "hi";
+  const punjabi = activeLanguage === "pa";
+  const query = message.toLocaleLowerCase();
+  const categories = [
+    { name: "Mystery", label: hindi ? "रहस्य" : punjabi ? "ਰਹੱਸ" : "Mystery", terms: ["mystery", "detective", "crime", "suspense", "रहस्य", "जासूस", "ਰਹੱਸ", "ਜਾਸੂਸ", "ਭੇਤ"] },
+    { name: "Adventure", label: hindi ? "रोमांच" : punjabi ? "ਰੋਮਾਂਚ" : "Adventure", terms: ["adventure", "journey", "travel", "रोमांच", "साहसिक", "ਰੋਮਾਂਚ", "ਸਾਹਸਿਕ", "ਸਫ਼ਰ"] },
+    { name: "Fantasy", label: hindi ? "काल्पनिक" : punjabi ? "ਕਲਪਨਾ" : "Fantasy", terms: ["fantasy", "magic", "wonder", "जादू", "काल्पनिक", "ਜਾਦੂ", "ਕਲਪਨਾ"] },
+    { name: "Romance", label: hindi ? "रोमांस" : punjabi ? "ਪਿਆਰ" : "Romance", terms: ["romance", "romantic", "प्रेम", "रोमांस", "ਪਿਆਰ", "ਇਸ਼ਕ"] },
+    { name: "Poetry", label: hindi ? "कविता" : punjabi ? "ਕਵਿਤਾ" : "Poetry", terms: ["poetry", "poem", "कविता", "काव्य", "ਕਵਿਤਾ", "ਸ਼ਾਇਰੀ"] },
+    { name: "Children", label: hindi ? "बच्चों की" : punjabi ? "ਬੱਚਿਆਂ ਦੀਆਂ" : "Children's", terms: ["children", "kids", "child", "बच्चों", "बच्चे", "ਬੱਚਿਆਂ", "ਬੱਚੇ"] },
+    { name: "Non-fiction", label: hindi ? "गैर-काल्पनिक" : punjabi ? "ਗ਼ੈਰ-ਗਲਪ" : "Non-fiction", terms: ["non-fiction", "nonfiction", "philosophy", "history", "दर्शन", "इतिहास", "ਗ਼ੈਰ-ਗਲਪ", "ਦਰਸ਼ਨ", "ਇਤਿਹਾਸ"] },
+    { name: "Classics", label: hindi ? "क्लासिक" : punjabi ? "ਕਲਾਸਿਕ" : "Classics", terms: ["classic", "classics", "क्लासिक", "ਕਲਾਸਿਕ"] }
+  ];
+  const category = categories.find(item => item.terms.some(term => query.includes(term)));
+  if (/\b(how many|number of|available|what books|which books|catalog|browse)\b/.test(query) || /कितनी|किताबें हैं|किताबें उपलब्ध|ਕਿੰਨੀਆਂ|ਕਿੰਨੀ ਕਿਤਾਬਾਂ|ਕਿਤਾਬਾਂ ਹਨ|ਕਿਤਾਬਾਂ ਕਿਹੜੀਆਂ/.test(query)) {
+    return hindi
+      ? `हमारी लाइब्रेरी में ${allBooks.length} किताबें हैं। आप किसी शैली, लेखक या किताब का नाम पूछ सकते हैं।`
+      : punjabi
+        ? `ਸਾਡੀ ਲਾਇਬ੍ਰੇਰੀ ਵਿੱਚ ${allBooks.length} ਕਿਤਾਬਾਂ ਹਨ। ਕਿਸੇ ਸ਼ੈਲੀ, ਲੇਖਕ ਜਾਂ ਕਿਤਾਬ ਦੇ ਨਾਮ ਬਾਰੇ ਪੁੱਛੋ।`
+      : `There are ${allBooks.length} books in our library. Ask me about a genre, author, or title.`;
+  }
+
+  const words = query.match(/[\p{L}\p{N}]+/gu) || [];
+  const ignored = new Set(["recommend", "recommendation", "suggest", "suggestion", "book", "books", "please", "some", "something", "about", "with", "from", "what", "which", "have", "want", "like", "read", "find", "me", "the", "a", "an", "for", "any", "good", "best", "do", "you", "your", "मुझे", "कोई", "किताब", "किताबें", "बताएं", "सुझाएं", "चाहिए", "पढ़ना", "ਕੋਈ", "ਕਿਤਾਬ", "ਕਿਤਾਬਾਂ", "ਦੱਸੋ", "ਸੁਝਾਓ", "ਚਾਹੀਦੀ", "ਪੜ੍ਹਨੀ", "ਮੈਨੂੰ", "ਕਰੋ"]);
+  const searchWords = words.filter(word => word.length > 2 && !ignored.has(word));
+  let matches = category
+    ? allBooks.filter(book => book.category === category.name)
+    : allBooks.filter(book => searchWords.some(word => `${book.title} ${book.author} ${book.category}`.toLocaleLowerCase().includes(word)));
+
+  if (!matches.length && (/\b(recommend|suggest|something|book|read)\b/.test(query) || /ਸੁਝਾਓ|ਕਿਤਾਬ|ਪੜ੍ਹਨ ਲਈ/.test(query) || /सुझाएं|किताब|पढ़ने/.test(query))) {
+    matches = allBooks.filter(book => ["Fiction", "Classics"].includes(book.category));
+  }
+  if (!matches.length) {
+    return hindi
+      ? "इस कैटलॉग में उसका मेल नहीं मिला। किसी शैली (जैसे रहस्य या रोमांच), लेखक या किताब का नाम पूछकर देखें।"
+      : punjabi
+        ? "ਇਸ ਸੂਚੀ ਵਿੱਚ ਉਹ ਨਹੀਂ ਮਿਲਿਆ। ਰਹੱਸ ਜਾਂ ਰੋਮਾਂਚ ਵਰਗੀ ਸ਼ੈਲੀ, ਲੇਖਕ ਜਾਂ ਕਿਤਾਬ ਦਾ ਨਾਮ ਪੁੱਛ ਕੇ ਵੇਖੋ।"
+      : "I couldn't find a match in this catalog. Try a genre like mystery or adventure, or ask about an author or title.";
+  }
+
+  const books = matches.slice(0, 3).map(book => `• ${book.title} — ${book.author}`).join("\n");
+  if (!category && matches.length === 1 && /\b(who|author|wrote|by)\b/.test(query)) {
+    return hindi
+      ? `${matches[0].title} के लेखक ${matches[0].author} हैं।`
+      : punjabi
+        ? `${matches[0].title} ਦੇ ਲੇਖਕ ${matches[0].author} ਹਨ।`
+      : `${matches[0].title} was written by ${matches[0].author}.`;
+  }
+  return hindi
+    ? `${category ? `${category.name} शैली` : "आपकी खोज"} के लिए ये किताबें देखें:\n${books}`
+    : punjabi
+      ? `${category ? `${category.label} ਸ਼ੈਲੀ` : "ਤੁਹਾਡੀ ਖੋਜ"} ਲਈ ਲਾਇਬ੍ਰੇਰੀ ਵਿੱਚੋਂ ਇਹ ਕਿਤਾਬਾਂ ਵੇਖੋ:\n${books}`
+      : `${category ? `${category.name} picks` : "Here are some matches"} from our library:\n${books}`;
+}
+
+function addBookAssistantMessage(message, sender) {
+  const messages = document.getElementById("assistant-messages");
+  if (!messages) return;
+  const item = document.createElement("p");
+  item.className = `assistant-message assistant-message-${sender}`;
+  item.textContent = message;
+  messages.appendChild(item);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function sendBookAssistantMessage(message) {
+  const text = message.trim();
+  if (!text) return;
+  addBookAssistantMessage(text, "user");
+  document.getElementById("assistant-suggestions")?.classList.add("hidden");
+  addBookAssistantMessage(getBookAssistantReply(text), "bot");
+}
+
+function getBookAssistantPrompt(prompt) {
+  const prompts = {
+    mystery: { en: "Recommend a mystery", hi: "रहस्य की किताब सुझाएं", pa: "ਰਹੱਸ ਦੀ ਕਿਤਾਬ ਸੁਝਾਓ" },
+    adventure: { en: "Recommend an adventure", hi: "रोमांचक किताब सुझाएं", pa: "ਰੋਮਾਂਚਕ ਕਿਤਾਬ ਸੁਝਾਓ" },
+    browse: { en: "What books do you have?", hi: "आपके पास कौन सी किताबें हैं?", pa: "ਤੁਹਾਡੇ ਕੋਲ ਕਿਹੜੀਆਂ ਕਿਤਾਬਾਂ ਹਨ?" }
+  };
+  return prompts[prompt]?.[activeLanguage] || prompt;
+}
+
+function resetBookAssistant() {
+  const messages = document.getElementById("assistant-messages");
+  if (!messages) return;
+  const welcome = translations[activeLanguage].assistantWelcome;
+  const suggestions = messages.querySelector("#assistant-suggestions");
+  messages.replaceChildren();
+  addBookAssistantMessage(welcome, "bot");
+  if (suggestions) {
+    suggestions.classList.remove("hidden");
+    messages.appendChild(suggestions);
+  }
+}
+
 function bindCommonControls() {
+  const assistantPanel = document.getElementById("assistant-panel");
+  const assistantLauncher = document.getElementById("assistant-launcher");
+  const closeAssistant = () => {
+    assistantPanel?.classList.add("hidden");
+    assistantLauncher?.setAttribute("aria-expanded", "false");
+  };
+  assistantLauncher?.addEventListener("click", () => {
+    assistantPanel?.classList.remove("hidden");
+    assistantLauncher.setAttribute("aria-expanded", "true");
+    document.getElementById("assistant-input")?.focus();
+  });
+  document.getElementById("assistant-close")?.addEventListener("click", () => {
+    closeAssistant();
+    assistantLauncher?.focus();
+  });
+  document.getElementById("assistant-clear")?.addEventListener("click", resetBookAssistant);
+  document.getElementById("assistant-form")?.addEventListener("submit", event => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const input = form.elements.message;
+    sendBookAssistantMessage(input.value);
+    input.value = "";
+    input.focus();
+  });
+  document.getElementById("assistant-suggestions")?.addEventListener("click", event => {
+    const button = event.target.closest("[data-assistant-prompt]");
+    if (button) sendBookAssistantMessage(getBookAssistantPrompt(button.dataset.assistantPrompt));
+  });
   document.getElementById("language-select")?.addEventListener("change", event => {
     applyLanguage(event.target.value);
     renderBooks();

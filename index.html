@@ -8,9 +8,9 @@
   <title>Online Book Library — A little more wonder, every day</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=3">
-  <script src="app.js?v=7" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+Gurmukhi:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=5">
+  <script src="app.js?v=11" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -23,7 +23,7 @@
       <a class="nav-link" href="#library" data-i18n="navBrowse">Browse books</a>
       <a class="nav-link" href="about.html" data-i18n="navAbout">About</a>
       <a class="nav-link" href="reviews.html" data-i18n="navReviews">Reviews</a>
-      <a class="button button-outline" id="profile-link" href="profile.html">My profile</a>
+      <a class="button button-outline" id="profile-link" href="profile.html" data-i18n="profileLink">My profile</a>
     </nav>
     <div class="header-actions">
       <label class="language-picker">
@@ -32,6 +32,7 @@
         <select id="language-select" aria-label="Choose language">
           <option value="en">EN</option>
           <option value="hi">हिन्दी</option>
+          <option value="pa">ਪੰਜਾਬੀ</option>
         </select>
       </label>
       <button class="button button-quiet header-donate" id="donate-button" type="button" data-i18n="donate">Donate</button>
@@ -101,8 +102,38 @@
   <footer class="site-footer">
     <a class="brand footer-brand" href="index.html"><span class="brand-mark" aria-hidden="true">ob</span><span class="brand-name">online<span>book library</span></span></a>
     <p data-i18n="footerLine">Made for slow mornings and one-more-chapter nights.</p>
-    <div><a href="about.html" data-i18n="navAbout">About</a><a href="reviews.html" data-i18n="navReviews">Reviews</a><button type="button" class="footer-donate" id="footer-donate">Donate a book</button></div>
+    <div><a href="about.html" data-i18n="navAbout">About</a><a href="reviews.html" data-i18n="navReviews">Reviews</a><button type="button" class="footer-donate" id="footer-donate" data-i18n="footerDonate">Donate a book</button></div>
   </footer>
+
+  <section class="book-assistant" aria-label="AI book assistant">
+    <div class="assistant-panel hidden" id="assistant-panel" aria-label="Book assistant chat">
+      <header class="assistant-header">
+        <div class="assistant-avatar" aria-hidden="true">✳</div>
+        <div class="assistant-heading"><strong data-i18n="assistantTitle">Book assistant</strong><small data-i18n="assistantSubtitle">Your friendly library guide</small></div>
+        <div class="assistant-top-actions">
+          <button class="assistant-clear" id="assistant-clear" type="button" aria-label="Clear conversation" title="Clear conversation">↺</button>
+          <button class="assistant-close" id="assistant-close" type="button" aria-label="Close chat">×</button>
+        </div>
+      </header>
+      <div class="assistant-messages" id="assistant-messages" role="log" aria-live="polite" aria-relevant="additions">
+        <p class="assistant-message assistant-message-bot" data-i18n="assistantWelcome">Hi! Tell me what you enjoy, or ask for a genre, author, or book from our library.</p>
+        <div class="assistant-suggestions" id="assistant-suggestions">
+          <button type="button" data-assistant-prompt="mystery" data-i18n="assistantMystery">Mystery</button>
+          <button type="button" data-assistant-prompt="adventure" data-i18n="assistantAdventure">Adventure</button>
+          <button type="button" data-assistant-prompt="browse" data-i18n="assistantBrowse">Browse the library</button>
+        </div>
+      </div>
+      <form class="assistant-form" id="assistant-form">
+        <label class="sr-only" for="assistant-input" data-i18n="assistantInputLabel">Ask about books</label>
+        <input id="assistant-input" name="message" maxlength="300" autocomplete="off" data-i18n-placeholder="assistantPlaceholder" placeholder="Ask me about books…" required>
+        <button type="submit" data-i18n="assistantSend" aria-label="Send message">Send</button>
+      </form>
+      <p class="assistant-privacy" data-i18n="assistantPrivacy">Replies use this library's catalog. Your messages stay in this browser.</p>
+    </div>
+    <button class="assistant-launcher" id="assistant-launcher" type="button" aria-controls="assistant-panel" aria-expanded="false">
+      <span class="assistant-launcher-icon" aria-hidden="true">✳</span><span data-i18n="assistantOpen">Ask the book assistant</span>
+    </button>
+  </section>
 
   <dialog class="site-dialog" id="upload-dialog">
     <form class="dialog-shell" id="upload-form">
