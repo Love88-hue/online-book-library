@@ -28,3 +28,16 @@ The repository includes `render.yaml` for a Flask web service with Gunicorn, HTT
 5. Use that Render URL for signup, login, profiles, uploads, and reviews. The Flask app serves the frontend on the same origin so secure login cookies work.
 
 GitHub Pages remains a separate static frontend; it cannot run Flask or access the Render login session. Its demo accounts, profile details, watchlists, and PDF uploads are stored only in each visitor's browser and are not secure shared accounts. The Render service uses its own database and uploaded files, separate from this computer's local `instance` folder. Do not expose the Flask development server directly to the internet.
+
+## Connect GitHub Pages to Render (optional)
+
+The static GitHub Pages build can call a Render API when an API URL is configured. Set this once in the browser console on the GitHub Pages origin:
+
+```javascript
+localStorage.setItem("obl_api_base", "https://YOUR-RENDER-SERVICE.onrender.com");
+location.reload();
+```
+
+On Render, set `CORS_ALLOWED_ORIGIN` to the exact GitHub Pages origin, for example `https://love88-hue.github.io`. Keep `FLASK_COOKIE_SAMESITE=None` and `FLASK_COOKIE_SECURE=1` for cross-site login cookies. Then redeploy the service.
+
+Uploaded PDFs in the static demo remain IndexedDB/Blob files in that browser; they are not uploaded to GitHub. The public seed catalogue uses Project Gutenberg PDF links when a mapped PDF is available, with a search fallback for titles not mapped.

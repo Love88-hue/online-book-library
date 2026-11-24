@@ -33,7 +33,10 @@ async function renderProfile() {
   dashboard.classList.add("hidden");
   if (!profileBackendEnabled) {
     try {
-      const email = localStorage.getItem("obl_session");
+      const email = localStorage.getItem("obl_session")
+        || sessionStorage.getItem("obl_session")
+        || localStorage.getItem("obl_last_email")
+        || "";
       if (!email) {
         status.classList.add("hidden");
         signIn.classList.remove("hidden");

@@ -70,9 +70,84 @@ const seedBooks = [
   coverUrl: `https://covers.openlibrary.org/b/title/${encodeURIComponent(title)}-M.jpg?default=false`,
   uploaded: false
 }));
-window.libraryBookCatalog = seedBooks.map(({ id, title, author, category, year, coverUrl }) => ({
-  id, title, author, category, year, coverUrl
+const publicDomainPdfIds = {
+  "Pride and Prejudice": 1342,
+  "Jane Eyre": 1260,
+  "Wuthering Heights": 768,
+  "Little Women": 514,
+  "The Secret Garden": 17396,
+  "Anne of Green Gables": 45,
+  "Alice's Adventures in Wonderland": 11,
+  "Through the Looking-Glass": 12,
+  "The Wonderful Wizard of Oz": 55,
+  "Treasure Island": 120,
+  "The Call of the Wild": 215,
+  "Robinson Crusoe": 521,
+  "Gulliver's Travels": 829,
+  "Around the World in 80 Days": 103,
+  "Twenty Thousand Leagues Under the Sea": 164,
+  "Journey to the Center of the Earth": 1885,
+  "The Time Machine": 35,
+  "The War of the Worlds": 36,
+  "Dracula": 345,
+  "Frankenstein": 84,
+  "The Wind in the Willows": 289,
+  "White Fang": 910,
+  "The Jungle Book": 359,
+  "The Art of War": 132,
+  "The Picture of Dorian Gray": 174,
+  "The Adventures of Sherlock Holmes": 1661,
+  "The Hound of the Baskervilles": 2852,
+  "The Moonstone": 155,
+  "The Woman in White": 747,
+  "The Scarlet Letter": 33,
+  "Moby-Dick": 2701,
+  "The Adventures of Tom Sawyer": 74,
+  "Adventures of Huckleberry Finn": 76,
+  "A Tale of Two Cities": 98,
+  "Oliver Twist": 730,
+  "David Copperfield": 766,
+  "Great Expectations": 1400,
+  "A Christmas Carol": 46,
+  "The Odyssey": 1727,
+  "The Iliad": 6130,
+  "The Republic": 1497,
+  "Meditations": 2680,
+  "Walden": 205,
+  "Leaves of Grass": 1322,
+  "The Raven and Other Poems": 1065,
+  "A Room of One's Own": 5670,
+  "Siddhartha": 2500,
+  "The Metamorphosis": 5200,
+  "The Count of Monte Cristo": 1184,
+  "The Three Musketeers": 1257,
+  "Les Misérables": 135,
+  "The Hunchback of Notre-Dame": 6530,
+  "The Brothers Karamazov": 28054,
+  "Crime and Punishment": 2554,
+  "War and Peace": 2600,
+  "The Adventures of Pinocchio": 500,
+  "Heidi": 1448,
+  "The Little Princess": 146
+};
+
+window.libraryBookCatalog = seedBooks.map(book => ({
+  id: book.id,
+  title: book.title,
+  author: book.author,
+  category: book.category,
+  year: book.year,
+  coverUrl: book.coverUrl,
+  pdfUrl: publicDomainPdfIds[book.title]
+    ? `https://www.gutenberg.org/cache/epub/${publicDomainPdfIds[book.title]}/pg${publicDomainPdfIds[book.title]}-images.pdf`
+    : `https://www.gutenberg.org/ebooks/search/?query=${encodeURIComponent(book.title)}`
 }));
+
+seedBooks.forEach(book => {
+  book.pdfUrl = publicDomainPdfIds[book.title]
+    ? `https://www.gutenberg.org/cache/epub/${publicDomainPdfIds[book.title]}/pg${publicDomainPdfIds[book.title]}-images.pdf`
+    : `https://www.gutenberg.org/ebooks/search/?query=${encodeURIComponent(book.title)}&format=pdf`;
+});
 
 const translations = {
   en: {
@@ -172,7 +247,15 @@ const translations = {
 
 const categoryColors = ["#718568", "#bd8068", "#7c8294", "#b69866", "#6c8a83", "#986f7d", "#8e795e", "#6e7989"];
 const databaseName = "online-book-library";
-const flaskBackendEnabled = location.protocol !== "file:" && !location.hostname.endsWith(".github.io");
+const configuredApiBase = (typeof window !== "undefined" && (
+  window.ONLINE_BOOK_LIBRARY_API_URL
+  || document.querySelector('meta[name="online-book-library-api"]')?.content
+  || localStorage.getItem("obl_api_base")
+  || ""
+)).trim().replace(/\/+$/, "");
+const flaskBackendEnabled = Boolean(configuredApiBase)
+  || (location.protocol !== "file:" && !location.hostname.endsWith(".github.io"));
+const apiBase = configuredApiBase;
 let allBooks = [...seedBooks];
 let activeTab = "discover";
 let selectedCategory = "all";
@@ -182,7 +265,7 @@ let currentUser = null;
 let serverWatchlist = [];
 
 async function apiRequest(path, options = {}) {
-  const response = await fetch(path, { credentials: "same-origin", ...options });
+  const response = await fetch(`${apiBase}${path}`, { credentials: apiBase ? "include" : "same-origin", ...options });
   const result = await response.json().catch(() => ({}));
   if (!response.ok) throw new Error(result.error || `Request failed (${response.status}).`);
   return result;
@@ -240,7 +323,10 @@ async function getUploads() {
     const request = transaction.objectStore("uploads").getAll();
     request.onsuccess = () => {
       database.close();
-      resolve(request.result);
+      const email = getAccountEmail();
+      resolve(request.result.filter(book =>
+        Boolean(email) && (!book.ownerEmail || book.ownerEmail === email)
+      ));
     };
     request.onerror = () => {
       database.close();
@@ -282,7 +368,32 @@ async function deleteUpload(id) {
 }
 
 function getAccountEmail() {
-  return flaskBackendEnabled ? currentUser?.email || "" : localStorage.getItem("obl_session") || "";
+  if (flaskBackendEnabled) return currentUser?.email || "";
+  try {
+    return localStorage.getItem("obl_session")
+      || sessionStorage.getItem("obl_session")
+      || localStorage.getItem("obl_last_email")
+      || "";
+  } catch (error) {
+    console.error("Could not read the saved session.", error);
+    return "";
+  }
+}
+
+function setLocalSessionEmail(email) {
+  const normalizedEmail = String(email || "").trim().toLowerCase();
+  try {
+    if (normalizedEmail) {
+      localStorage.setItem("obl_session", normalizedEmail);
+      localStorage.setItem("obl_last_email", normalizedEmail);
+      sessionStorage.setItem("obl_session", normalizedEmail);
+    } else {
+      localStorage.removeItem("obl_session");
+      sessionStorage.removeItem("obl_session");
+    }
+  } catch (error) {
+    console.error("Could not save the local session.", error);
+  }
 }
 
 function getWatchlist() {
@@ -507,6 +618,11 @@ function readBook(book) {
     window.setTimeout(() => URL.revokeObjectURL(url), 60000);
     return;
   }
+  const gutenbergId = publicDomainPdfIds[book.title];
+  if (gutenbergId) {
+    window.open(`https://www.gutenberg.org/cache/epub/${gutenbergId}/pg${gutenbergId}-images.pdf`, "_blank", "noopener,noreferrer");
+    return;
+  }
   const url = `https://www.gutenberg.org/ebooks/search/?query=${encodeURIComponent(book.title)}`;
   window.open(url, "_blank", "noopener,noreferrer");
 }
@@ -562,7 +678,7 @@ async function showAccountDialog() {
         return;
       }
     } else {
-      localStorage.removeItem("obl_session");
+      setLocalSessionEmail("");
       updateProfileLink();
       window.dispatchEvent(new Event("obl-auth-changed"));
     }
@@ -590,6 +706,10 @@ function updateAccountMode() {
   nameField?.classList.toggle("hidden", !isSignup);
   if (nameInput) nameInput.required = isSignup;
   if (password) password.autocomplete = isSignup ? "new-password" : "current-password";
+  const emailInput = document.querySelector('#account-form input[name="email"]');
+  if (emailInput && !emailInput.value) {
+    emailInput.value = getAccountEmail() || localStorage.getItem("obl_last_email") || "";
+  }
 }
 
 async function hashPassword(password, salt) {
@@ -813,6 +933,7 @@ function bindCommonControls() {
           category: String(data.get("category")),
           cover: coverUrl,
           pdf,
+          ownerEmail: getAccountEmail(),
           createdAt: Date.now(),
           uploaded: true
         });
@@ -860,7 +981,7 @@ function bindCommonControls() {
           const account = accounts[email];
           if (!account || await hashPassword(password, account.salt) !== account.passwordHash) throw new Error("Email or password doesn't match an account in this browser.");
         }
-        localStorage.setItem("obl_session", email);
+        setLocalSessionEmail(email);
       }
       updateProfileLink();
       window.dispatchEvent(new Event("obl-auth-changed"));

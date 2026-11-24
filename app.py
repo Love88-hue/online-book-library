@@ -34,8 +34,9 @@ app.config.update(
     UPLOAD_FOLDER=os.environ.get("UPLOAD_FOLDER", str(INSTANCE / "uploads")),
     MAX_CONTENT_LENGTH=36 * 1024 * 1024,
     SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SAMESITE="Lax",
+    SESSION_COOKIE_SAMESITE=os.environ.get("FLASK_COOKIE_SAMESITE", "Lax"),
     SESSION_COOKIE_SECURE=os.environ.get("FLASK_COOKIE_SECURE") == "1",
+    CORS_ALLOWED_ORIGIN=os.environ.get("CORS_ALLOWED_ORIGIN", "").strip(),
 )
 Path(app.config["UPLOAD_FOLDER"]).mkdir(parents=True, exist_ok=True)
 
@@ -78,6 +79,25 @@ CREATE TABLE IF NOT EXISTS reviews (
     created_at TEXT NOT NULL
 );
 """
+
+
+@app.after_request
+def add_cors_headers(response):
+    allowed_origin = app.config["CORS_ALLOWED_ORIGIN"]
+    request_origin = request.headers.get("Origin", "")
+    if allowed_origin and request_origin == allowed_origin:
+        response.headers["Access-Control-Allow-Origin"] = allowed_origin
+        response.headers["Vary"] = "Origin"
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    return response
+
+
+@app.route("/", defaults={"_unused": ""}, methods=["OPTIONS"])
+@app.route("/<path:_unused>", methods=["OPTIONS"])
+def cors_preflight(_unused):
+    return ("", 204)
 
 
 def get_db():

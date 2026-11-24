@@ -19,3 +19,5 @@ services:
         generateValue: true
       - key: FLASK_COOKIE_SECURE
         value: "1"
+      - key: FLASK_COOKIE_SAMESITE
+        value: "None"
