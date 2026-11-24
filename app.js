@@ -131,6 +131,62 @@ const publicDomainPdfIds = {
   "The Little Princess": 146
 };
 
+const bundledPdfNames = {
+  "Pride and Prejudice": "pride-and-prejudice.pdf",
+  "Jane Eyre": "jane-eyre.pdf",
+  "Wuthering Heights": "wuthering-heights.pdf",
+  "Little Women": "little-women.pdf",
+  "The Secret Garden": "the-secret-garden.pdf",
+  "Anne of Green Gables": "anne-of-green-gables.pdf",
+  "Alice's Adventures in Wonderland": "alices-adventures-in-wonderland.pdf",
+  "Through the Looking-Glass": "through-the-looking-glass.pdf",
+  "The Wonderful Wizard of Oz": "the-wonderful-wizard-of-oz.pdf",
+  "The Wind in the Willows": "the-wind-in-the-willows.pdf",
+  "Treasure Island": "treasure-island.pdf",
+  "The Call of the Wild": "the-call-of-the-wild.pdf",
+  "White Fang": "white-fang.pdf",
+  "Robinson Crusoe": "robinson-crusoe.pdf",
+  "Gulliver's Travels": "gulliver-s-travels.pdf",
+  "Around the World in 80 Days": "around-the-world-in-80-days.pdf",
+  "Twenty Thousand Leagues Under the Sea": "twenty-thousand-leagues-under-the-sea.pdf",
+  "The Time Machine": "the-time-machine.pdf",
+  "The War of the Worlds": "the-war-of-the-worlds.pdf",
+  "Dracula": "dracula.pdf",
+  "Frankenstein": "frankenstein.pdf",
+  "The Picture of Dorian Gray": "the-picture-of-dorian-gray.pdf",
+  "The Adventures of Sherlock Holmes": "the-adventures-of-sherlock-holmes.pdf",
+  "The Hound of the Baskervilles": "the-hound-of-the-baskervilles.pdf",
+  "The Moonstone": "the-moonstone.pdf",
+  "The Scarlet Letter": "the-scarlet-letter.pdf",
+  "Moby-Dick": "moby-dick.pdf",
+  "The Great Gatsby": "the-great-gatsby.pdf",
+  "The Adventures of Tom Sawyer": "the-adventures-of-tom-sawyer.pdf",
+  "Adventures of Huckleberry Finn": "adventures-of-huckleberry-finn.pdf",
+  "A Tale of Two Cities": "a-tale-of-two-cities.pdf",
+  "Oliver Twist": "oliver-twist.pdf",
+  "David Copperfield": "david-copperfield.pdf",
+  "Great Expectations": "great-expectations.pdf",
+  "A Christmas Carol": "a-christmas-carol.pdf",
+  "The Iliad": "the-iliad.pdf",
+  "The Republic": "the-republic.pdf",
+  "Meditations": "meditations.pdf",
+  "The Art of War": "the-art-of-war.pdf",
+  "Leaves of Grass": "leaves-of-grass.pdf",
+  "The Prophet": "the-prophet.pdf",
+  "A Room of One's Own": "a-room-of-one-s-own.pdf",
+  "Siddhartha": "siddhartha.pdf",
+  "The Metamorphosis": "the-metamorphosis.pdf",
+  "The Count of Monte Cristo": "the-count-of-monte-cristo.pdf",
+  "The Three Musketeers": "the-three-musketeers.pdf",
+  "Les Misérables": "les-miserables.pdf",
+  "The Brothers Karamazov": "the-brothers-karamazov.pdf",
+  "Crime and Punishment": "crime-and-punishment.pdf",
+  "War and Peace": "war-and-peace.pdf",
+  "The Adventures of Pinocchio": "the-adventures-of-pinocchio.pdf",
+  "Heidi": "heidi.pdf",
+  "The Little Princess": "the-little-princess.pdf"
+};
+
 window.libraryBookCatalog = seedBooks.map(book => ({
   id: book.id,
   title: book.title,
@@ -138,41 +194,10 @@ window.libraryBookCatalog = seedBooks.map(book => ({
   category: book.category,
   year: book.year,
   coverUrl: book.coverUrl,
-  pdfUrl: ({
-    "Pride and Prejudice": "pride-and-prejudice.pdf",
-    "Jane Eyre": "jane-eyre.pdf",
-    "Wuthering Heights": "wuthering-heights.pdf",
-    "Little Women": "little-women.pdf",
-    "The Secret Garden": "the-secret-garden.pdf",
-    "Anne of Green Gables": "anne-of-green-gables.pdf",
-    "Alice's Adventures in Wonderland": "alices-adventures-in-wonderland.pdf",
-    "Through the Looking-Glass": "through-the-looking-glass.pdf",
-    "The Wonderful Wizard of Oz": "the-wonderful-wizard-of-oz.pdf"
-  })[book.title] ? `books/${({
-    "Pride and Prejudice": "pride-and-prejudice.pdf",
-    "Jane Eyre": "jane-eyre.pdf",
-    "Wuthering Heights": "wuthering-heights.pdf",
-    "Little Women": "little-women.pdf",
-    "The Secret Garden": "the-secret-garden.pdf",
-    "Anne of Green Gables": "anne-of-green-gables.pdf",
-    "Alice's Adventures in Wonderland": "alices-adventures-in-wonderland.pdf",
-    "Through the Looking-Glass": "through-the-looking-glass.pdf",
-    "The Wonderful Wizard of Oz": "the-wonderful-wizard-of-oz.pdf"
-  })[book.title]}` : null
+  pdfUrl: bundledPdfNames[book.title] ? `books/${bundledPdfNames[book.title]}` : null
 }));
 
 seedBooks.forEach(book => {
-  const bundledPdfNames = {
-    "Pride and Prejudice": "pride-and-prejudice.pdf",
-    "Jane Eyre": "jane-eyre.pdf",
-    "Wuthering Heights": "wuthering-heights.pdf",
-    "Little Women": "little-women.pdf",
-    "The Secret Garden": "the-secret-garden.pdf",
-    "Anne of Green Gables": "anne-of-green-gables.pdf",
-    "Alice's Adventures in Wonderland": "alices-adventures-in-wonderland.pdf",
-    "Through the Looking-Glass": "through-the-looking-glass.pdf",
-    "The Wonderful Wizard of Oz": "the-wonderful-wizard-of-oz.pdf"
-  };
   book.pdfUrl = bundledPdfNames[book.title] ? `books/${bundledPdfNames[book.title]}` : null;
 });
 
