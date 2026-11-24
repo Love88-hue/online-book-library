@@ -138,15 +138,42 @@ window.libraryBookCatalog = seedBooks.map(book => ({
   category: book.category,
   year: book.year,
   coverUrl: book.coverUrl,
-  pdfUrl: publicDomainPdfIds[book.title]
-    ? `https://www.gutenberg.org/cache/epub/${publicDomainPdfIds[book.title]}/pg${publicDomainPdfIds[book.title]}-images.pdf`
-    : `https://www.gutenberg.org/ebooks/search/?query=${encodeURIComponent(book.title)}`
+  pdfUrl: ({
+    "Pride and Prejudice": "pride-and-prejudice.pdf",
+    "Jane Eyre": "jane-eyre.pdf",
+    "Wuthering Heights": "wuthering-heights.pdf",
+    "Little Women": "little-women.pdf",
+    "The Secret Garden": "the-secret-garden.pdf",
+    "Anne of Green Gables": "anne-of-green-gables.pdf",
+    "Alice's Adventures in Wonderland": "alices-adventures-in-wonderland.pdf",
+    "Through the Looking-Glass": "through-the-looking-glass.pdf",
+    "The Wonderful Wizard of Oz": "the-wonderful-wizard-of-oz.pdf"
+  })[book.title] ? `books/${({
+    "Pride and Prejudice": "pride-and-prejudice.pdf",
+    "Jane Eyre": "jane-eyre.pdf",
+    "Wuthering Heights": "wuthering-heights.pdf",
+    "Little Women": "little-women.pdf",
+    "The Secret Garden": "the-secret-garden.pdf",
+    "Anne of Green Gables": "anne-of-green-gables.pdf",
+    "Alice's Adventures in Wonderland": "alices-adventures-in-wonderland.pdf",
+    "Through the Looking-Glass": "through-the-looking-glass.pdf",
+    "The Wonderful Wizard of Oz": "the-wonderful-wizard-of-oz.pdf"
+  })[book.title]}` : null
 }));
 
 seedBooks.forEach(book => {
-  book.pdfUrl = publicDomainPdfIds[book.title]
-    ? `https://www.gutenberg.org/cache/epub/${publicDomainPdfIds[book.title]}/pg${publicDomainPdfIds[book.title]}-images.pdf`
-    : `https://www.gutenberg.org/ebooks/search/?query=${encodeURIComponent(book.title)}&format=pdf`;
+  const bundledPdfNames = {
+    "Pride and Prejudice": "pride-and-prejudice.pdf",
+    "Jane Eyre": "jane-eyre.pdf",
+    "Wuthering Heights": "wuthering-heights.pdf",
+    "Little Women": "little-women.pdf",
+    "The Secret Garden": "the-secret-garden.pdf",
+    "Anne of Green Gables": "anne-of-green-gables.pdf",
+    "Alice's Adventures in Wonderland": "alices-adventures-in-wonderland.pdf",
+    "Through the Looking-Glass": "through-the-looking-glass.pdf",
+    "The Wonderful Wizard of Oz": "the-wonderful-wizard-of-oz.pdf"
+  };
+  book.pdfUrl = bundledPdfNames[book.title] ? `books/${bundledPdfNames[book.title]}` : null;
 });
 
 const translations = {
